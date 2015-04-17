@@ -1,0 +1,15 @@
+*.phar
+.buildpath
+.idea
+.project
+.settings
+.DS_Store
+._.DS_Store
+/backup
+/build/logs
+/build/phar
+/build/coverage
+/composer.lock
+/phpbu.xml
+/vendor/
+/nbproject/
