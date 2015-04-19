@@ -1,4 +1,4 @@
-<?php namespace Dbrouter\Url;
+<?php namespace Dbrouter\Url\Segment;
 
 /**
  * Path item interface
@@ -10,7 +10,7 @@
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
  */
-interface PathItem 
+interface SegmentItem 
 {
     
     const DOC_TYPE_HTML         = 'html';
@@ -32,7 +32,7 @@ interface PathItem
     /**
      * Returns the current type.
      * 
-     * @return string|NULL
+     * @return string
      */
     public function getType();
     
@@ -53,31 +53,31 @@ interface PathItem
     /**
      * Returns the item below the current one.
      * 
-     * @return PathItem|NULL;
+     * @return SegmentItem;
      */
     public function getBelow();
     
     /**
      * Returns the item above the current one.
      * 
-     * @return PathItem|NULL;
+     * @return SegmentItem;
      */
     public function getAbove();
     
     /**
      * Adds the next path item.
      * 
-     * @param \Dbrouter\Url\PathItem $item
-     * @return \Dbrouter\Url\PathItem
+     * @param \Dbrouter\Url\SegmentItem $item
+     * @return \Dbrouter\Url\SegmentItem
      */
-    public function attachPathItemAbove(PathItem $item);
+    public function attachSegmentItemAbove(SegmentItem $item);
     
     /**
      * Adds the path item before.
      * 
-     * @param \Dbrouter\Url\PathItem $item
-     * @return \Dbrouter\Url\PathItem
+     * @param \Dbrouter\Url\SegmentItem $item
+     * @return \Dbrouter\Url\SegmentItem
      */
-    public function attachPathItemBelow(PathItem $item);
+    public function attachSegmentItemBelow(SegmentItem $item);
     
 }

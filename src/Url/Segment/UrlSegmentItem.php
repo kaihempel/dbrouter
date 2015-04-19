@@ -1,6 +1,7 @@
-<?php namespace Dbrouter\Url;
+<?php namespace Dbrouter\Url\Segment;
 
-use Dbrouter\Exception\Url\UrlPathItemException;
+use Dbrouter\Exception\Url\UrlSegmentItemException;
+use Dbrouter\Url\UrlIdentifier;
 
 /**
  * Path item class
@@ -12,7 +13,7 @@ use Dbrouter\Exception\Url\UrlPathItemException;
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
  */
-class UrlPathItem implements PathItem
+class UrlSegmentItem implements SegmentItem
 {
     /**
      * Current unique url ID
@@ -63,7 +64,7 @@ class UrlPathItem implements PathItem
         // Check and set value
         
         if (empty($value)) {
-            throw UrlPathItemException::make('No path value given!');
+            throw UrlSegmentItemException::make('No path value given!');
         }
         
         $this->value    = $value;
@@ -133,7 +134,7 @@ class UrlPathItem implements PathItem
     /**
      * Returns the item below the current one.
      * 
-     * @return PathItem|NULL;
+     * @return SegmentItem|NULL;
      */
     public function getBelow() 
     {
@@ -143,7 +144,7 @@ class UrlPathItem implements PathItem
     /**
      * Returns the item above the current one.
      * 
-     * @return PathItem|NULL;
+     * @return SegmentItem|NULL;
      */
     public function getAbove()
     {
@@ -153,17 +154,17 @@ class UrlPathItem implements PathItem
     /**
      * Adds the next path item.
      * 
-     * @param \Dbrouter\Url\PathItem $item
-     * @return \Dbrouter\Url\PathItem
+     * @param \Dbrouter\Url\SegmentItem $item
+     * @return \Dbrouter\Url\SegmentItem
      */
-    public function attachPathItemAbove(PathItem $item) 
+    public function attachSegmentItemAbove(SegmentItem $item) 
     {
         $this->above = $item;
         
         // Register self as item belove inside above.
             // This completes the item Chain.
         
-        $this->above->attachPathItemBelow($this);
+        $this->above->attachSegmentItemBelow($this);
         
         return $this; 
     }
@@ -171,10 +172,10 @@ class UrlPathItem implements PathItem
     /**
      * Adds the path item before.
      * 
-     * @param \Dbrouter\Url\PathItem $item
-     * @return \Dbrouter\Url\PathItem
+     * @param \Dbrouter\Url\SegmentItem $item
+     * @return \Dbrouter\Url\SegmentItem
      */
-    public function attachPathItemBelow(PathItem $item) 
+    public function attachSegmentItemBelow(SegmentItem $item) 
     { 
         $this->below = $item;
         
