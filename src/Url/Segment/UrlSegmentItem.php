@@ -4,7 +4,7 @@ use Dbrouter\Exception\Url\UrlSegmentItemException;
 use Dbrouter\Url\UrlIdentifier;
 
 /**
- * Path item class
+ * Path segment class
  *
  * @package    Dbrouter
  * @author     Kai Hempel <dev@kuweh.de>
@@ -13,14 +13,14 @@ use Dbrouter\Url\UrlIdentifier;
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
  */
-class UrlSegmentItem implements SegmentItem
+class UrlSegmentItem implements SegmentItem, SegmentExtentsion
 {
     /**
      * Current unique url ID
      * 
      * @var type 
      */
-    private $url_id     = NULL;
+    private $urlId     = NULL;
     
     /**
      * Path item value
@@ -59,7 +59,7 @@ class UrlSegmentItem implements SegmentItem
     {
         // Set url ID
         
-        $this->url_id   = $id;
+        $this->urlId   = $id;
 
         // Check and set value
         
@@ -78,7 +78,7 @@ class UrlSegmentItem implements SegmentItem
      */
     public function getUrlId() 
     {
-        return $this->url_id;
+        return $this->urlId;
     }
     
     /**
@@ -96,17 +96,17 @@ class UrlSegmentItem implements SegmentItem
      * 
      * @return boolean
      */
-    public function hasType()
+    public function hasExtentsion()
     {
         return (empty($this->type)) ? false : true;
     }
     
     /**
-     * Returns the current type.
+     * Returns the current extentsion type.
      * 
      * @return string|NULL
      */
-    public function getType()
+    public function getExtentsion()
     {
         return $this->type;
     }

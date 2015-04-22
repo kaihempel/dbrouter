@@ -1,9 +1,10 @@
 <?php namespace Dbrouter\Url\Segment;
 
 /**
- * Path item interface
+ * Segment item interface.
+ * Defines the methods for the chained list.
  *
- * @package    Dynamicuri
+ * @package    Dbrouter
  * @author     Kai Hempel <dev@kuweh.de>
  * @copyright  2014 Kai Hempel <dev@kuweh.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
@@ -12,30 +13,6 @@
  */
 interface SegmentItem 
 {
-    
-    const DOC_TYPE_HTML         = 'html';
-    const DOC_TYPE_XML          = 'xml';
-    const DOC_TYPE_JSON         = 'json';
-    const DOC_TYPE_TEXT         = 'text';
-    const DOC_TYPE_JAVASCRIPT   = 'javascript';
-    const DOC_TYPE_PNG          = 'png';
-    const DOC_TYPE_JPEG         = 'jpeg';
-    const DOC_TYPE_GIF          = 'gif';
-    
-    /**
-     * Checks if the current path item has a type.
-     * 
-     * @return boolean
-     */
-    public function hasType();
-    
-    /**
-     * Returns the current type.
-     * 
-     * @return string
-     */
-    public function getType();
-    
     /**
      * Checks if the current item is the first one.
      * 

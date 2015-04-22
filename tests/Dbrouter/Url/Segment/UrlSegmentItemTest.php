@@ -53,18 +53,18 @@ class UrlSegmentItemTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('test', $item->getValue());
     }
     
-    public function testHasType() {
+    public function testHasExtentsion() {
         
         $item = new UrlSegmentItem($this->url_id, 'test');
         
-        $this->assertFalse($item->hasType());
+        $this->assertFalse($item->hasExtentsion());
     }
     
-    public function testGetType() {
+    public function testGetExtentsion() {
         
         $item = new UrlSegmentItem($this->url_id, 'test');
         
-        $this->assertEmpty($item->getType());
+        $this->assertEmpty($item->getExtentsion());
     }
     
     public function testIsFirstItem() {
