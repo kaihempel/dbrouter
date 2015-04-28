@@ -18,7 +18,7 @@ class UrlSegmentItem implements SegmentItem, SegmentExtentsion
     /**
      * Current unique url ID
      * 
-     * @var type 
+     * @var UrlIdentifier
      */
     private $urlId      = NULL;
     
@@ -32,14 +32,14 @@ class UrlSegmentItem implements SegmentItem, SegmentExtentsion
     /**
      * Path object below
      * 
-     * @var type 
+     * @var UrlSegmentItem
      */
     private $below      = NULL;
     
     /**
      * Path object above
      * 
-     * @var type 
+     * @var UrlSegmentItem
      */
     private $above      = NULL;
     
@@ -168,7 +168,7 @@ class UrlSegmentItem implements SegmentItem, SegmentExtentsion
     /**
      * Returns the current extentsion type.
      * 
-     * @return string|NULL
+     * @return string|null
      */
     public function getExtentsion()
     {
@@ -198,7 +198,7 @@ class UrlSegmentItem implements SegmentItem, SegmentExtentsion
     /**
      * Returns the item below the current one.
      * 
-     * @return SegmentItem|NULL;
+     * @return SegmentItem|null;
      */
     public function getBelow() 
     {
@@ -208,7 +208,7 @@ class UrlSegmentItem implements SegmentItem, SegmentExtentsion
     /**
      * Returns the item above the current one.
      * 
-     * @return SegmentItem|NULL;
+     * @return SegmentItem|null;
      */
     public function getAbove()
     {
