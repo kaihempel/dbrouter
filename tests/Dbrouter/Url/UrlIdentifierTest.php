@@ -29,4 +29,11 @@ class UrlIdentifierTest extends PHPUnit_Framework_TestCase
     public function testNewUrlIdentifierException() {
         $id = new UrlIdentifier(NULL);
     }
+    
+    public function testEmptyUrlIdentifier() {
+        $id = new UrlIdentifier(0);
+        
+        $this->assertEquals(0, $id->getId());
+        $this->assertTrue($id->isEmpty());
+    }
 }

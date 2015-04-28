@@ -15,7 +15,8 @@ class UrlSegmentAnalyzerTest extends PHPUnit_Framework_TestCase
         
         $this->item->shouldReceive('getValue')->andReturn('test');
         
-        $analyzer = new UrlSegmentAnalyzer($this->item);
+        $analyzer = new UrlSegmentAnalyzer();
+        $analyzer->process($this->item);
         
         $this->assertInstanceOf('\Dbrouter\Url\Segment\UrlSegmentAnalyzer', $analyzer);
     }
@@ -24,7 +25,11 @@ class UrlSegmentAnalyzerTest extends PHPUnit_Framework_TestCase
         
         $this->item->shouldReceive('getValue')->andReturn('*');
         
-        $analyzer = new UrlSegmentAnalyzer($this->item);
+        $analyzer = new UrlSegmentAnalyzer();
+        
+        $this->assertFalse($analyzer->isWildcard());
+        
+        $analyzer->process($this->item);
         
         $this->assertInstanceOf('\Dbrouter\Url\Segment\UrlSegmentAnalyzer', $analyzer);
         $this->assertTrue($analyzer->isWildcard());
@@ -36,7 +41,8 @@ class UrlSegmentAnalyzerTest extends PHPUnit_Framework_TestCase
         
         $this->item->shouldReceive('getValue')->andReturn('{id}');
         
-        $analyzer = new UrlSegmentAnalyzer($this->item);
+        $analyzer = new UrlSegmentAnalyzer();
+        $analyzer->process($this->item);
         
         $this->assertInstanceOf('\Dbrouter\Url\Segment\UrlSegmentAnalyzer', $analyzer);
         $this->assertFalse($analyzer->isWildcard());
@@ -50,13 +56,14 @@ class UrlSegmentAnalyzerTest extends PHPUnit_Framework_TestCase
         
         $this->item->shouldReceive('getValue')->andReturn('test.jpeg');
         
-        $analyzer = new UrlSegmentAnalyzer($this->item);
+        $analyzer = new UrlSegmentAnalyzer();
+        $analyzer->process($this->item);
         
         $this->assertInstanceOf('\Dbrouter\Url\Segment\UrlSegmentAnalyzer', $analyzer);
         $this->assertFalse($analyzer->isWildcard());
         $this->assertFalse($analyzer->isPlaceholder());
         $this->assertTrue($analyzer->hasExtentsion());
         $this->assertEquals('jpeg', $analyzer->getExtentsion());
-        
+        $this->assertTrue($analyzer->isFile());
     }
 }

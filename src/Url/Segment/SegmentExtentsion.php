@@ -15,6 +15,7 @@ interface SegmentExtentsion
 {
     
     const DOC_TYPE_HTML         = 'html';
+    const DOC_TYPE_CSS          = 'css';
     const DOC_TYPE_XML          = 'xml';
     const DOC_TYPE_JSON         = 'json';
     const DOC_TYPE_TEXT         = 'txt';
@@ -22,6 +23,7 @@ interface SegmentExtentsion
     const DOC_TYPE_PNG          = 'png';
     const DOC_TYPE_JPEG         = 'jpeg';
     const DOC_TYPE_GIF          = 'gif';
+    const DOC_TYPE_SVG          = 'svg';
     
     /**
      * Checks if the current path item has a type.

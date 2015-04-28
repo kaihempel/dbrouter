@@ -20,7 +20,7 @@ class UrlSegmentItem implements SegmentItem, SegmentExtentsion
      * 
      * @var type 
      */
-    private $urlId     = NULL;
+    private $urlId      = NULL;
     
     /**
      * Path item value
@@ -44,37 +44,60 @@ class UrlSegmentItem implements SegmentItem, SegmentExtentsion
     private $above      = NULL;
     
     /**
+     * Segment analyzer object
      *
-     * @var type 
+     * @var UrlSegmentAnalyzer 
      */
-    private $type       = NULL;
+    private $analyzer   = NULL;
     
     /**
-     * 
-     * @param \Dbrouter\Url\UrlIdentifier $id
-     * @param type $value
-     * @throws type
+     * File extentsion
+     *
+     * @var string 
      */
-    public function __construct(UrlIdentifier $id, $value) 
+    private $extentsion = NULL;
+    
+    /**
+     * Constructor
+     * 
+     * @param   string              $value          Segment value
+     * @param   UrlIdentifier       $id             Url identifier
+     * @throws  UrlSegmentItemException
+     */
+    public function __construct($value, UrlIdentifier $id = NULL) 
     {
-        // Set url ID
-        
-        $this->urlId   = $id;
-
         // Check and set value
         
         if (empty($value)) {
             throw UrlSegmentItemException::make('No path value given!');
         }
         
-        $this->value    = $value;
+        $this->value = $value;
         
+        // Set url ID
+        
+        if ( ! empty($id)) {
+            $this->setId($id);
+        }
+
+    }
+    
+    /**
+     * Sets the url identifier object
+     * 
+     * @param UrlIdentifier $id
+     */
+    public function setId(UrlIdentifier $id) 
+    {
+        $this->urlId = $id;
+        
+        return $this;
     }
     
     /**
      * Returns the url identifier object
      * 
-     * @return \Dbrouter\Url\UrlIdentifier
+     * @return UrlIdentifier
      */
     public function getUrlId() 
     {
@@ -92,13 +115,54 @@ class UrlSegmentItem implements SegmentItem, SegmentExtentsion
     }
     
     /**
+     * Set the segment analyzer
+     * 
+     * @param   UrlSegmentAnalyzer $analyzer
+     * @return  UrlSegmentItem
+     * @throws  UrlSegmentItemException
+     */
+    public function attachAnalyzer(UrlSegmentAnalyzer $analyzer) 
+    {   
+        $this->analyzer = $analyzer;
+        $this->analyzer->process($this);
+        
+        return $this;
+    }
+    
+    /**
+     * Returns the string
+     * 
+     * @return string
+     */
+    public function getType() 
+    {
+        if (empty($this->analyzer)) {
+            return NULL;
+        }
+        
+        // Check the analyzer
+        
+        if ($this->analyzer->isPlaceholder()) {
+            return self::TYPE_PLACEHOLDER;
+            
+        } else if ($this->analyzer->isWildcard()) {
+            return self::TYPE_WILDCARD;
+            
+        } else if ($this->analyzer->isFile()) {
+            return self::TYPE_FILE;
+        }
+        
+        return self::TYPE_PATH;
+    }
+    
+    /**
      * Checks if the current path item has a type.
      * 
      * @return boolean
      */
     public function hasExtentsion()
     {
-        return (empty($this->type)) ? false : true;
+        return (empty($this->extentsion)) ? false : true;
     }
     
     /**
@@ -108,7 +172,7 @@ class UrlSegmentItem implements SegmentItem, SegmentExtentsion
      */
     public function getExtentsion()
     {
-        return $this->type;
+        return $this->extentsion;
     }
     
     /**
@@ -154,15 +218,15 @@ class UrlSegmentItem implements SegmentItem, SegmentExtentsion
     /**
      * Adds the next path item.
      * 
-     * @param \Dbrouter\Url\SegmentItem $item
-     * @return \Dbrouter\Url\SegmentItem
+     * @param   UrlSegmentItem $item
+     * @return  UrlSegmentItem
      */
     public function attachSegmentItemAbove(SegmentItem $item) 
     {
         $this->above = $item;
         
         // Register self as item belove inside above.
-            // This completes the item Chain.
+        // This completes the item Chain.
         
         $this->above->attachSegmentItemBelow($this);
         
@@ -172,8 +236,8 @@ class UrlSegmentItem implements SegmentItem, SegmentExtentsion
     /**
      * Adds the path item before.
      * 
-     * @param \Dbrouter\Url\SegmentItem $item
-     * @return \Dbrouter\Url\SegmentItem
+     * @param   UrlSegmentItem $item
+     * @return  UrlSegmentItem
      */
     public function attachSegmentItemBelow(SegmentItem $item) 
     { 

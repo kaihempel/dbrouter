@@ -26,7 +26,7 @@ class UrlSegmentItemTest extends PHPUnit_Framework_TestCase
     
     public function testNewUrlSegmentItem() {
         
-        $item = new UrlSegmentItem($this->url_id, 'test');
+        $item = new UrlSegmentItem('test');
         
         $this->assertInstanceOf('Dbrouter\Url\Segment\UrlSegmentItem', $item);
     }
@@ -36,69 +36,70 @@ class UrlSegmentItemTest extends PHPUnit_Framework_TestCase
      * @expectedExceptionMessage No path value given!
      */
     public function testNewUrlSegmentItemException() {        
-        $item = new UrlSegmentItem($this->url_id, NULL);
+        $item = new UrlSegmentItem(NULL);
     }
     
-    public function testGetId() {
+    public function testUrlId() {
         
-        $item = new UrlSegmentItem($this->url_id, 'test');
+        $item = new UrlSegmentItem('test');
+        $item->setId($this->url_id);
         
         $this->assertInstanceOf('Dbrouter\Url\UrlIdentifier', $item->getUrlId());
     }
-    
+
     public function testGetValue() {
         
-        $item = new UrlSegmentItem($this->url_id, 'test');
+        $item = new UrlSegmentItem('test', $this->url_id);
         
         $this->assertEquals('test', $item->getValue());
     }
     
     public function testHasExtentsion() {
         
-        $item = new UrlSegmentItem($this->url_id, 'test');
+        $item = new UrlSegmentItem('test', $this->url_id);
         
         $this->assertFalse($item->hasExtentsion());
     }
     
     public function testGetExtentsion() {
         
-        $item = new UrlSegmentItem($this->url_id, 'test');
+        $item = new UrlSegmentItem('test', $this->url_id);
         
         $this->assertEmpty($item->getExtentsion());
     }
     
     public function testIsFirstItem() {
         
-        $item = new UrlSegmentItem($this->url_id, 'test');
+        $item = new UrlSegmentItem('test', $this->url_id);
         
         $this->assertTrue($item->isFirstItem());
     }
     
     public function testIsLstItem() {
         
-        $item = new UrlSegmentItem($this->url_id, 'test');
+        $item = new UrlSegmentItem('test', $this->url_id);
         
         $this->assertTrue($item->isLastItem());
     }
     
     public function testGetBelow() {
         
-        $item = new UrlSegmentItem($this->url_id, 'test');
+        $item = new UrlSegmentItem('test', $this->url_id);
         
         $this->assertEmpty($item->getBelow());
     }
     
     public function testGetAbove() {
         
-        $item = new UrlSegmentItem($this->url_id, 'test');
+        $item = new UrlSegmentItem('test', $this->url_id);
         
         $this->assertEmpty($item->getAbove());
     }
     
     public function testAttachSegmentItemAbove() {
         
-        $above  = new UrlSegmentItem($this->url_id, 'bar');
-        $item   = new UrlSegmentItem($this->url_id, 'foo');
+        $above  = new UrlSegmentItem('bar', $this->url_id);
+        $item   = new UrlSegmentItem('foo', $this->url_id);
         
         $item->attachSegmentItemAbove($above);
         
@@ -108,4 +109,75 @@ class UrlSegmentItemTest extends PHPUnit_Framework_TestCase
         $this->assertEmpty($item->getBelow());
     }
     
+    public function testAttachItemAnalyzer() {
+        
+        $analyzer = m::mock('\Dbrouter\Url\Segment\UrlSegmentAnalyzer');
+        $analyzer->shouldReceive('process')->once();
+        
+        $item   = new UrlSegmentItem('foo', $this->url_id);
+        $item->attachAnalyzer($analyzer);        
+    }
+    
+    public function testGetTypeWithoutAnalyzer() {
+        
+        $item   = new UrlSegmentItem('foo', $this->url_id);
+        
+        $this->assertEquals(NULL, $item->getType()); 
+    }
+    
+    public function testGetTypePath() {
+        
+        $analyzer = m::mock('\Dbrouter\Url\Segment\UrlSegmentAnalyzer');
+        $analyzer->shouldReceive('process')->once();
+        $analyzer->shouldReceive('isPlaceholder')->andReturn(false);
+        $analyzer->shouldReceive('isWildcard')->andReturn(false);
+        $analyzer->shouldReceive('isFile')->andReturn(false);
+        
+        $item   = new UrlSegmentItem('foo', $this->url_id);
+        $item->attachAnalyzer($analyzer);
+        
+        $this->assertEquals(UrlSegmentItem::TYPE_PATH, $item->getType());
+    }
+    
+    public function testGetTypePlaceholder() {
+        
+        $analyzer = m::mock('\Dbrouter\Url\Segment\UrlSegmentAnalyzer');
+        $analyzer->shouldReceive('process')->once();
+        $analyzer->shouldReceive('isPlaceholder')->andReturn(true);
+        $analyzer->shouldReceive('isWildcard')->andReturn(false);
+        $analyzer->shouldReceive('isFile')->andReturn(false);
+        
+        $item   = new UrlSegmentItem('{foo}', $this->url_id);
+        $item->attachAnalyzer($analyzer);
+        
+        $this->assertEquals(UrlSegmentItem::TYPE_PLACEHOLDER, $item->getType());
+    }
+    
+    public function testGetTypeWildcard() {
+        
+        $analyzer = m::mock('\Dbrouter\Url\Segment\UrlSegmentAnalyzer');
+        $analyzer->shouldReceive('process')->once();
+        $analyzer->shouldReceive('isPlaceholder')->andReturn(false);
+        $analyzer->shouldReceive('isWildcard')->andReturn(true);
+        $analyzer->shouldReceive('isFile')->andReturn(false);
+        
+        $item   = new UrlSegmentItem('*', $this->url_id);
+        $item->attachAnalyzer($analyzer);
+        
+        $this->assertEquals(UrlSegmentItem::TYPE_WILDCARD, $item->getType());
+    }
+    
+    public function testGetTypeFile() {
+        
+        $analyzer = m::mock('\Dbrouter\Url\Segment\UrlSegmentAnalyzer');
+        $analyzer->shouldReceive('process')->once();
+        $analyzer->shouldReceive('isPlaceholder')->andReturn(false);
+        $analyzer->shouldReceive('isWildcard')->andReturn(false);
+        $analyzer->shouldReceive('isFile')->andReturn(true);
+        
+        $item   = new UrlSegmentItem('test.png', $this->url_id);
+        $item->attachAnalyzer($analyzer);
+        
+        $this->assertEquals(UrlSegmentItem::TYPE_FILE, $item->getType());
+    }
 }

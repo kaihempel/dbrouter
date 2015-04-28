@@ -13,6 +13,11 @@
  */
 interface SegmentItem 
 {
+    const TYPE_PATH         = 'path';
+    const TYPE_PLACEHOLDER  = 'placeholder';
+    const TYPE_WILDCARD     = 'wildcard';
+    const TYPE_FILE         = 'file';
+    
     /**
      * Checks if the current item is the first one.
      * 

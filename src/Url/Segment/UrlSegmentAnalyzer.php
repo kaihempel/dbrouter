@@ -41,28 +41,17 @@ class UrlSegmentAnalyzer implements SegmentExtentsion
     protected $extentsion   = NULL;
     
     /**
-     * Constructor
-     * 
-     * @param \Dbrouter\Url\Segment\UrlSegmentItem $item
-     */
-    public function __construct(UrlSegmentItem $item) {
-        
-        // Save item reference
-        
-        $this->item = $item;
-        
-        // Process current item
-        
-        $this->process();
-    }
-    
-    /**
      * Checks the type of the item
      * 
+     * @param \Dbrouter\Url\Segment\UrlSegmentItem $item
      * @return void
      */
-    private function process() 
+    public function process(UrlSegmentItem $item) 
     {
+     
+        // Register the item
+        
+        $this->item = $item;
         
         // Wildcard element, nothing to do!
         
@@ -85,6 +74,16 @@ class UrlSegmentAnalyzer implements SegmentExtentsion
             $this->extentsion   = $matches[1];
         }
         
+    }
+    
+    /**
+     * Checks if already a item is set
+     * 
+     * @return boolean
+     */
+    public function isSetItem() 
+    {
+        return (empty($this->item)) ? false : true;
     }
     
     /**
@@ -112,7 +111,8 @@ class UrlSegmentAnalyzer implements SegmentExtentsion
      * 
      * @return string
      */
-    public function getRegex() {
+    public function getRegex() 
+    {
         return $this->regex;
     }
     
@@ -123,7 +123,25 @@ class UrlSegmentAnalyzer implements SegmentExtentsion
      */
     public function isWildcard() 
     {
+        // No item set, it's definitely no wildcard
+        
+        if ($this->isSetItem() === false) {
+            return false;
+        }
+        
+        // Check the value of the current item
+        
         return ($this->item->getValue() == '*') ? true : false;
+    }
+    
+    /**
+     * Checks if the current item is a wildcard
+     * 
+     * @return boolean
+     */
+    public function isFile() 
+    {
+        return ($this->hasExtentsion()) ? true : false;
     }
     
     /**

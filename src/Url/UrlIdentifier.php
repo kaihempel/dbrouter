@@ -46,4 +46,14 @@ class UrlIdentifier
         return $this->id;
     }
     
+    /**
+     * Checks if the current ID is zero
+     * 
+     * @return boolean
+     */
+    public function isEmpty() 
+    {
+        return (empty($this->id)) ? true : false;
+    }
+    
 }
