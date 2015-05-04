@@ -25,7 +25,7 @@ class UrlSegmentItemFactory
      * @return \Dbrouter\Url\Segment\UrlSegmentItem
      * @throws \Dbrouter\Url\Segment\UrlSegmentItemException
      */
-    public function make($segment, $id = NULL)
+    public static function make($segment, $id = NULL)
     {
 
         if (empty($segment) || !is_string($segment)) {
