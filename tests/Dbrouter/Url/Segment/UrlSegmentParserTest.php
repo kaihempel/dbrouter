@@ -46,7 +46,7 @@ class UrlSegmentParserTest extends PHPUnit_Framework_TestCase
      */
     public function testProcessEmptyItem() {
         
-        $this->url->shouldReceive('getRawUrl')->once()->andReturn('/test//test.html');
+        $this->url->shouldReceive('getRawUrl')->once()->andReturn('/test////test.html');
         $this->url->shouldReceive('getId')->once()->andReturn(NULL);
         $this->url->shouldReceive('attachUrlSegmentItem');
         

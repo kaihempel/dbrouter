@@ -97,6 +97,10 @@ class UrlSegmentParser
         
         $urlstring = preg_replace('/^([a-z]+:\/\/)/i', '', $urlstring);
         
+        // Remove double slashes
+
+        $urlstring = preg_replace('/(\/\/)/i', '/', $urlstring);
+        
         // Remove everything before the fist slash and the the slash too.
         
         $slashpos = strpos($urlstring, '/');
