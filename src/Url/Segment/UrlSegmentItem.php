@@ -13,7 +13,7 @@ use Dbrouter\Url\UrlIdentifier;
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
  */
-class UrlSegmentItem implements SegmentItem, SegmentExtentsion
+class UrlSegmentItem implements SegmentItem, SegmentItemAttachAble, SegmentExtentsion
 {
     /**
      * Current unique url ID
@@ -221,14 +221,16 @@ class UrlSegmentItem implements SegmentItem, SegmentExtentsion
      * @param   UrlSegmentItem $item
      * @return  UrlSegmentItem
      */
-    public function attachSegmentItemAbove(SegmentItem $item) 
+    public function attachSegmentItemAbove(SegmentItemAttachAble $item) 
     {
         $this->above = $item;
         
         // Register self as item belove inside above.
         // This completes the item Chain.
         
-        $this->above->attachSegmentItemBelow($this);
+        if ($this->above->getBelow() === NULL) {
+            $this->above->attachSegmentItemBelow($this);
+        }
         
         return $this; 
     }
@@ -239,11 +241,19 @@ class UrlSegmentItem implements SegmentItem, SegmentExtentsion
      * @param   UrlSegmentItem $item
      * @return  UrlSegmentItem
      */
-    public function attachSegmentItemBelow(SegmentItem $item) 
+    public function attachSegmentItemBelow(SegmentItemAttachAble $item) 
     { 
         $this->below = $item;
         
+        // Register self as item above inside below.
+        // This completes the item Chain.
+        
+        if ($this->below->getAbove() === NULL) {
+            $this->below->attachSegmentItemAbove($this);
+        }
+        
         return $this; 
     }
+    
 }
 

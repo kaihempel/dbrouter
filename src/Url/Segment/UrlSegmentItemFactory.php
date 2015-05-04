@@ -34,7 +34,7 @@ class UrlSegmentItemFactory
 
         // Create item instance
 
-        if (!empty($id) && $id instanceof \Dbrouter\Url\UrlIdentifier) {
+        if ( ! empty($id) && $id instanceof \Dbrouter\Url\UrlIdentifier) {
             $item = self::makeItemWithId($segment, $id);
         } else {
             $item = self::makeItem($segment);

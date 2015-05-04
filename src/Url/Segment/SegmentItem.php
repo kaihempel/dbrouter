@@ -46,20 +46,4 @@ interface SegmentItem
      */
     public function getAbove();
     
-    /**
-     * Adds the next path item.
-     * 
-     * @param \Dbrouter\Url\SegmentItem $item
-     * @return \Dbrouter\Url\SegmentItem
-     */
-    public function attachSegmentItemAbove(SegmentItem $item);
-    
-    /**
-     * Adds the path item before.
-     * 
-     * @param \Dbrouter\Url\SegmentItem $item
-     * @return \Dbrouter\Url\SegmentItem
-     */
-    public function attachSegmentItemBelow(SegmentItem $item);
-    
 }
