@@ -19,6 +19,8 @@ class UrlSegmentAnalyzerTest extends PHPUnit_Framework_TestCase
         $analyzer->process($this->item);
         
         $this->assertInstanceOf('\Dbrouter\Url\Segment\UrlSegmentAnalyzer', $analyzer);
+        $this->assertEquals('path', $analyzer->getType());
+        $this->assertEquals(2, $analyzer->getWeight());
     }
     
     public function testNewWildcard() {
@@ -35,6 +37,8 @@ class UrlSegmentAnalyzerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($analyzer->isWildcard());
         $this->assertFalse($analyzer->isPlaceholder());
         $this->assertFalse($analyzer->hasExtentsion());
+        $this->assertEquals('wildcard', $analyzer->getType());
+        $this->assertEquals(0, $analyzer->getWeight());
     }
     
     public function testNewPlaceholder() {
@@ -50,6 +54,8 @@ class UrlSegmentAnalyzerTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($analyzer->hasExtentsion());
         $this->assertEquals('(.\*?)', $analyzer->getRegex());
         $this->assertEquals('id', $analyzer->getPlaceholderName());
+        $this->assertEquals('placeholder', $analyzer->getType());
+        $this->assertEquals(1, $analyzer->getWeight());
     }
     
     public function testNewWithExtentsion() {
@@ -65,5 +71,7 @@ class UrlSegmentAnalyzerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($analyzer->hasExtentsion());
         $this->assertEquals('jpeg', $analyzer->getExtentsion());
         $this->assertTrue($analyzer->isFile());
+        $this->assertEquals('file', $analyzer->getType());
+        $this->assertEquals(3, $analyzer->getWeight());
     }
 }

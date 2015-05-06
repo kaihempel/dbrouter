@@ -77,6 +77,54 @@ class UrlSegmentAnalyzer implements SegmentExtentsion
     }
     
     /**
+     * Returns the string
+     * 
+     * @return string
+     */
+    public function getType() 
+    {   
+        // Check the analyzer
+        
+        if ($this->isPlaceholder()) {
+            return UrlSegmentItem::TYPE_PLACEHOLDER;
+            
+        } else if ($this->isWildcard()) {
+            return UrlSegmentItem::TYPE_WILDCARD;
+            
+        } else if ($this->isFile()) {
+            return UrlSegmentItem::TYPE_FILE;
+        }
+        
+        return UrlSegmentItem::TYPE_PATH;
+    }
+    
+    /**
+     * Return the current segment weight
+     * 
+     * @return integer
+     */
+    public function getWeight() 
+    {
+        
+        // Check current type and return the corresponding weight
+        
+        if ($this->isPlaceholder()) {
+            return UrlSegmentItem::SEGMENT_WEIGHT_PLACEHOLDER;
+            
+        } else if ($this->isWildcard()) {
+            return UrlSegmentItem::SEGMENT_WEIGHT_WILDCARD;
+        
+        } else if ($this->isFile()) {
+            return UrlSegmentItem::SEGMENT_WEIGHT_FILE;
+            
+        }
+        
+        // Default is path
+        
+        return UrlSegmentItem::SEGMENT_WEIGHT_PATH;
+    }
+    
+    /**
      * Checks if already a item is set
      * 
      * @return boolean
