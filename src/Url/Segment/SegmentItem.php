@@ -13,10 +13,15 @@
  */
 interface SegmentItem 
 {
-    const TYPE_PATH         = 'path';
-    const TYPE_PLACEHOLDER  = 'placeholder';
-    const TYPE_WILDCARD     = 'wildcard';
-    const TYPE_FILE         = 'file';
+    const TYPE_PATH                     = 'path';
+    const TYPE_PLACEHOLDER              = 'placeholder';
+    const TYPE_WILDCARD                 = 'wildcard';
+    const TYPE_FILE                     = 'file';
+    
+    const SEGMENT_WEIGHT_PATH           = 2;
+    const SEGMENT_WEIGHT_PLACEHOLDER    = 1;
+    const SEGMENT_WEIGHT_WILDCARD       = 0;
+    const SEGMENT_WEIGHT_FILE           = 3;
     
     /**
      * Checks if the current item is the first one.
@@ -45,5 +50,19 @@ interface SegmentItem
      * @return SegmentItem;
      */
     public function getAbove();
+    
+    /**
+     * Returns the current item type
+     * 
+     * @return string
+     */
+    public function getType();
+    
+    /**
+     * Returns the current weight
+     * 
+     * @return integer
+     */
+    public function getWeight();
     
 }

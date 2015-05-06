@@ -51,11 +51,25 @@ class UrlSegmentItem implements SegmentItem, SegmentItemAttachAble, SegmentExten
     private $analyzer   = NULL;
     
     /**
+     * Item type
+     *
+     * @var string 
+     */
+    private $type       = NULL;
+    
+    /**
      * File extentsion
      *
      * @var string 
      */
     private $extentsion = NULL;
+    
+    /**
+     * Current item weight
+     * 
+     * @var integer 
+     */
+    private $weight = 0;
     
     /**
      * Constructor
@@ -123,37 +137,20 @@ class UrlSegmentItem implements SegmentItem, SegmentItemAttachAble, SegmentExten
      */
     public function attachAnalyzer(UrlSegmentAnalyzer $analyzer) 
     {   
+        // Store analyzer and process current item
+        
         $this->analyzer = $analyzer;
         $this->analyzer->process($this);
+        
+        // Store the main results
+        
+        $this->type     = $this->analyzer->getType();
+        $this->weight   = $this->analyzer->getWeight();
         
         return $this;
     }
     
-    /**
-     * Returns the string
-     * 
-     * @return string
-     */
-    public function getType() 
-    {
-        if (empty($this->analyzer)) {
-            return NULL;
-        }
-        
-        // Check the analyzer
-        
-        if ($this->analyzer->isPlaceholder()) {
-            return self::TYPE_PLACEHOLDER;
-            
-        } else if ($this->analyzer->isWildcard()) {
-            return self::TYPE_WILDCARD;
-            
-        } else if ($this->analyzer->isFile()) {
-            return self::TYPE_FILE;
-        }
-        
-        return self::TYPE_PATH;
-    }
+    
     
     /**
      * Checks if the current path item has a type.
@@ -213,6 +210,26 @@ class UrlSegmentItem implements SegmentItem, SegmentItemAttachAble, SegmentExten
     public function getAbove()
     {
         return $this->above;
+    }
+   
+    /**
+     * Returns the current item type
+     * 
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+    
+    /**
+     * Returns the type depending item weight
+     * 
+     * @return integer 
+     */
+    public function getWeight() 
+    {
+        return $this->weight;
     }
     
     /**

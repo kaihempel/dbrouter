@@ -109,10 +109,26 @@ class UrlSegmentItemTest extends PHPUnit_Framework_TestCase
         $this->assertEmpty($item->getBelow());
     }
     
+    public function testAttachSegmentItemBelow() {
+        
+        $below  = new UrlSegmentItem('bar', $this->url_id);
+        $item   = new UrlSegmentItem('foo', $this->url_id);
+        
+        $item->attachSegmentItemBelow($below);
+        
+        $this->assertTrue($item->isLastItem());
+        $this->assertFalse($item->isFirstItem());
+        $this->assertEmpty($item->getAbove());
+        $this->assertInstanceOf('\Dbrouter\Url\Segment\UrlSegmentItem', $item->getBelow());
+        
+    }
+    
     public function testAttachItemAnalyzer() {
         
         $analyzer = m::mock('\Dbrouter\Url\Segment\UrlSegmentAnalyzer');
         $analyzer->shouldReceive('process')->once();
+        $analyzer->shouldReceive('getType')->andReturn('path');
+        $analyzer->shouldReceive('getWeight')->andReturn(2);
         
         $item   = new UrlSegmentItem('foo', $this->url_id);
         $item->attachAnalyzer($analyzer);        
@@ -132,6 +148,8 @@ class UrlSegmentItemTest extends PHPUnit_Framework_TestCase
         $analyzer->shouldReceive('isPlaceholder')->andReturn(false);
         $analyzer->shouldReceive('isWildcard')->andReturn(false);
         $analyzer->shouldReceive('isFile')->andReturn(false);
+        $analyzer->shouldReceive('getType')->andReturn('path');
+        $analyzer->shouldReceive('getWeight')->andReturn(2);
         
         $item   = new UrlSegmentItem('foo', $this->url_id);
         $item->attachAnalyzer($analyzer);
@@ -146,6 +164,8 @@ class UrlSegmentItemTest extends PHPUnit_Framework_TestCase
         $analyzer->shouldReceive('isPlaceholder')->andReturn(true);
         $analyzer->shouldReceive('isWildcard')->andReturn(false);
         $analyzer->shouldReceive('isFile')->andReturn(false);
+        $analyzer->shouldReceive('getType')->andReturn('placeholder');
+        $analyzer->shouldReceive('getWeight')->andReturn(1);
         
         $item   = new UrlSegmentItem('{foo}', $this->url_id);
         $item->attachAnalyzer($analyzer);
@@ -160,6 +180,8 @@ class UrlSegmentItemTest extends PHPUnit_Framework_TestCase
         $analyzer->shouldReceive('isPlaceholder')->andReturn(false);
         $analyzer->shouldReceive('isWildcard')->andReturn(true);
         $analyzer->shouldReceive('isFile')->andReturn(false);
+        $analyzer->shouldReceive('getType')->andReturn('wildcard');
+        $analyzer->shouldReceive('getWeight')->andReturn(0);
         
         $item   = new UrlSegmentItem('*', $this->url_id);
         $item->attachAnalyzer($analyzer);
@@ -174,10 +196,28 @@ class UrlSegmentItemTest extends PHPUnit_Framework_TestCase
         $analyzer->shouldReceive('isPlaceholder')->andReturn(false);
         $analyzer->shouldReceive('isWildcard')->andReturn(false);
         $analyzer->shouldReceive('isFile')->andReturn(true);
+        $analyzer->shouldReceive('getType')->andReturn('file');
+        $analyzer->shouldReceive('getWeight')->andReturn(3);
         
         $item   = new UrlSegmentItem('test.png', $this->url_id);
         $item->attachAnalyzer($analyzer);
         
         $this->assertEquals(UrlSegmentItem::TYPE_FILE, $item->getType());
+    }
+    
+    public function testGetWeight() {
+        
+        $analyzer = m::mock('\Dbrouter\Url\Segment\UrlSegmentAnalyzer');
+        $analyzer->shouldReceive('process')->once();
+        $analyzer->shouldReceive('isPlaceholder')->andReturn(false);
+        $analyzer->shouldReceive('isWildcard')->andReturn(false);
+        $analyzer->shouldReceive('isFile')->andReturn(true);
+        $analyzer->shouldReceive('getType')->andReturn('file');
+        $analyzer->shouldReceive('getWeight')->andReturn(3);
+        
+        $item   = new UrlSegmentItem('test.png', $this->url_id);
+        $item->attachAnalyzer($analyzer);
+        
+        $this->assertEquals(3, $item->getWeight());
     }
 }
