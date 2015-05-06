@@ -235,7 +235,7 @@ class UrlSegmentItem implements SegmentItem, SegmentItemAttachAble, SegmentExten
     /**
      * Adds the next path item.
      * 
-     * @param   UrlSegmentItem $item
+     * @param   SegmentItemAttachAble $item Url segment item
      * @return  UrlSegmentItem
      */
     public function attachSegmentItemAbove(SegmentItemAttachAble $item) 
@@ -255,7 +255,7 @@ class UrlSegmentItem implements SegmentItem, SegmentItemAttachAble, SegmentExten
     /**
      * Adds the path item before.
      * 
-     * @param   UrlSegmentItem $item
+     * @param   SegmentItemAttachAble $item Url segment item
      * @return  UrlSegmentItem
      */
     public function attachSegmentItemBelow(SegmentItemAttachAble $item) 

@@ -19,7 +19,7 @@ class UrlSegmentParser
     /**
      * Url object
      * 
-     * @var Dbrouter\Url\Url 
+     * @var Url 
      */
     private $url = NULL;
     
@@ -71,8 +71,8 @@ class UrlSegmentParser
     /**
      * Creates on segment item
      * 
-     * @param type $segment
-     * @return type
+     * @param string $segment
+     * @return UrlSegmentItem
      */
     private function createUrlSegmentItem($segment) 
     {
@@ -91,7 +91,6 @@ class UrlSegmentParser
     private function getPreparedUrlString() 
     {
         $urlstring = $this->url->getRawUrl();
-        $urllength = strlen($urlstring);
         
         // Remove schem if its set
         
