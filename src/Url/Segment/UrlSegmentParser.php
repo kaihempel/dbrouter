@@ -42,7 +42,6 @@ class UrlSegmentParser
      */
     public function process() 
     {
-        
         // Split the url
         
         $segments       = explode('/', $this->getPreparedUrlString());
@@ -106,6 +105,12 @@ class UrlSegmentParser
         
         if ($slashpos !== false) {
             $urlstring = substr($urlstring, $slashpos +1);
+        }
+        
+        // Check if the last sign a slash to
+        
+        if (substr($urlstring, -1) == '/') {
+            $urlstring = substr($urlstring, 0, strlen($urlstring) -1);
         }
         
         return $urlstring;

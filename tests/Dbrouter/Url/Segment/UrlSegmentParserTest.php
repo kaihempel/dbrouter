@@ -31,6 +31,18 @@ class UrlSegmentParserTest extends PHPUnit_Framework_TestCase
     
     public function testProcess() {
         
+        $this->url->shouldReceive('getRawUrl')->once()->andReturn('/test/path/');
+        $this->url->shouldReceive('getId')->once()->andReturn(NULL);
+        $this->url->shouldReceive('attachUrlSegmentItem');
+        
+        $parser = new UrlSegmentParser($this->url);
+        $parser->process();
+        
+        $this->assertInstanceOf('\Dbrouter\Url\Segment\UrlSegmentParser', $parser);
+    }
+    
+    public function testProcessWithFile() {
+        
         $this->url->shouldReceive('getRawUrl')->once()->andReturn('/test/test.html');
         $this->url->shouldReceive('getId')->once()->andReturn(NULL);
         $this->url->shouldReceive('attachUrlSegmentItem');
