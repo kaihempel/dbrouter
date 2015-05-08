@@ -3,6 +3,9 @@
 use Dbrouter\Exception\Url\UrlException;
 use Dbrouter\Url\UrlIdentifier;
 use Dbrouter\Url\Segment\UrlSegmentItem;
+use Dbrouter\Url\Segment\UrlSegmentParser;
+use Doctrine\DBAL\Connection;
+use Carbon\Carbon;
 
 /**
  * Url container class
@@ -17,29 +20,45 @@ use Dbrouter\Url\Segment\UrlSegmentItem;
 class Url
 {
     /**
-     *
+     * Url identifier object
+     * 
      * @var UrlIdentifier 
      */
-    private $id         = NULL;
+    private $id             = NULL;
     
     /**
+     * The raw url string
      *
-     * @var type 
+     * @var string 
      */
-    protected $url      = NULL;
+    protected $url          = NULL;
             
     /**
      * Segments after dispatch process
      * 
-     * @var \Dbrouter\Url\Segment\UrlSegmentItem 
+     * @var UrlSegmentItem 
      */
-    protected $segments = NULL;
+    protected $segments     = NULL;
+    
+    /**
+     * Current number of segments
+     * 
+     * @var integer 
+     */
+    protected $segmentcount = 0;
+    
+    /**
+     * Current calculated url weight
+     * 
+     * @var integer 
+     */
+    protected $weight       = 0;
  
     /**
      * Constructor
      * 
-     * @param   string $url
-     * @throws  Dbrouter\Exception\Url\UrlException
+     * @param   string $url The url string
+     * @throws  UrlException
      */
     public function __construct($url) {
         
@@ -51,8 +70,9 @@ class Url
     }
     
     /**
+     * Checks if the ID object is set
      * 
-     * @return type
+     * @return boolean
      */
     public function hasId() 
     {
@@ -60,8 +80,9 @@ class Url
     }
     
     /**
+     * Returns the ID object 
      * 
-     * @return type
+     * @return UrlIdentifier
      */
     public function getId() 
     {
@@ -69,12 +90,66 @@ class Url
     }
     
     /**
+     * Returns the raw url string
      * 
      * @return string
      */
     public function getRawUrl() 
     {
         return $this->url;
+    }
+    
+    /**
+     * Returns the base segment of the item chain 
+     * 
+     * @return UrlSegmentItem
+     */
+    public function getSegments() 
+    {
+        return $this->segments;
+    }
+    
+    /**
+     * Returns the segment count
+     * 
+     * @return integer
+     */
+    public function getSegmentcount() 
+    {
+        return $this->segmentcount;
+    }
+    
+    /**
+     * Returns the whole calculated url weight
+     * 
+     * @return integer
+     */
+    public function getWeight() 
+    {
+        return $this->weight;
+    }
+    
+    /**
+     * Increments the weight with the item weight
+     * 
+     * @param   UrlSegmentItem $item
+     * @return  void
+     */
+    private function calculateNewWeight(UrlSegmentItem $item) 
+    {
+        $this->weight += $item->getWeight();
+    }
+    
+    /**
+     * Parse the raw url strint into his segments
+     * 
+     * @return Url
+     */
+    public function parse() {
+        $parser = new UrlSegmentParser($this);
+        $parser->process();
+
+        return $this;
     }
     
     /**
@@ -96,6 +171,7 @@ class Url
         
         if (empty($this->segments)) {
             $this->segments = $item;
+            $this->segmentcount++;
           
         // Attach "below" (the easy way)
         //
@@ -108,6 +184,7 @@ class Url
         } else if ($mode == UrlSegmentItem::ATTACH_MODE_BELOW) {
             $this->segments->attachSegmentItemBelow($item);
             $this->segments = $item;
+            $this->segmentcount++;
         
         // Attach "above" (have to finde the last item)
         //    
@@ -131,9 +208,13 @@ class Url
             // Attach the new item as item above
             
             $current->attachSegmentItemAbove($item);
+            $this->segmentcount++;
         }
         
+        // Calculate the new url weight and return self for chaining
+        
+        $this->calculateNewWeight($item);
         return $this;
     }
-    
+   
 }
