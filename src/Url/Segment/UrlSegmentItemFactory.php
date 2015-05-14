@@ -28,7 +28,7 @@ class UrlSegmentItemFactory
     public static function make($segment, $id = NULL)
     {
 
-        if (empty($segment) || !is_string($segment)) {
+        if (empty($segment) || ! is_string($segment)) {
             throw UrlSegmentItemException::make('Unexpected segment given!');
         }
 
