@@ -1,4 +1,4 @@
-<?php namespace Dbrouter\Url\Segment;
+<?php namespace Dbrouter\Url\Segment\Mapper;
 
 use Doctrine\DBAL\Connection;
 use PDO;
@@ -14,66 +14,66 @@ use PDO;
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
  */
-abstract class BaseMapper 
+abstract class BaseMapper
 {
     /**
      * Base map variable.
      * Have to be redeclared in child class!
      *
-     * @var array 
+     * @var array
      */
     protected static $map;
-    
+
     /**
      * Constructor
-     * 
+     *
      * @param Connection $db
      */
-    public function __construct(Connection $db) 
+    public function __construct(Connection $db)
     {
         // Set the PDO fetch mode
-        
+
         $db->setFetchMode(PDO::FETCH_OBJ);
-        
+
         // Load the data
-        
+
         $this->load($db);
     }
-    
+
     /**
      * Loads the mapping data
-     * 
+     *
      * @param Connection $db
      * @return void
      */
     abstract protected function load(Connection $db);
-    
+
     /**
-     * 
+     *
      * @return type
      */
-    public function isEmpty() 
+    public function isEmpty()
     {
         return (empty(static::$map)) ? true : false;
     }
-    
+
     /**
      * Returns the mapped data value to the given key
-     * 
+     *
      * @param   string|integer $key
      * @return  mixed|null
      */
-    public function getValue($key) 
+    public function getValue($key)
     {
         if (isset(static::$map[$key])) {
             return static::$map[$key];
         }
-        
+
         return NULL;
     }
-    
+
     /**
-     * 
+     *
      * @param type $key
      * @param type $value
      */
@@ -81,5 +81,5 @@ abstract class BaseMapper
     {
         static::$map[$key] = $value;
     }
-    
+
 }

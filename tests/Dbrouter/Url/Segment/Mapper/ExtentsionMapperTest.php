@@ -1,4 +1,4 @@
-<?php  namespace Dbrouter\Url\Segment;
+<?php  namespace Dbrouter\Url\Segment\Mapper;
 
 use PHPUnit_Framework_TestCase;
 use Mockery as m;
@@ -14,16 +14,16 @@ use Mockery as m;
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
  */
-class UrlSegmentExtentsionMapperTest extends PHPUnit_Framework_TestCase 
+class ExtentsionMapperTest extends PHPUnit_Framework_TestCase
 {
     protected $db = NULL;
-    
-    public function setUp() 
+
+    public function setUp()
     {
         $row1 = new \stdClass();
         $row1->id   = 1;
         $row1->name = 'html';
-      
+
 	$row2 = new \stdClass();
         $row2->id   = 2;
         $row2->name = 'css';
@@ -31,74 +31,73 @@ class UrlSegmentExtentsionMapperTest extends PHPUnit_Framework_TestCase
         $row3 = new \stdClass();
         $row3->id   = 3;
         $row3->name = 'xml';
-        
+
         $this->db = m::mock('Doctrine\DBAL\Connection');
         $this->db->shouldReceive('setFetchMode');
         $this->db->shouldReceive('fetchAll')->andReturn(array($row1, $row2, $row3));
     }
-    
+
     /**
      * @expectedException Dbrouter\Exception\Url\UrlSegmentMapperException
      */
-    public function testLoadException() 
+    public function testLoadException()
     {
         $db = m::mock('Doctrine\DBAL\Connection');
         $db->shouldReceive('setFetchMode');
         $db->shouldReceive('fetchAll')->andReturn(array());
-        
-        $mapper = new UrlSegmentExtentsionMapper($db);
+
+        $mapper = new ExtentsionMapper($db);
     }
-    
+
     public function testNewMapper()
     {
-        $mapper = new UrlSegmentExtentsionMapper($this->db);
-        
-        $this->assertInstanceOf('Dbrouter\Url\Segment\UrlSegmentExtentsionMapper', $mapper);
+        $mapper = new ExtentsionMapper($this->db);
+
+        $this->assertInstanceOf('Dbrouter\Url\Segment\Mapper\ExtentsionMapper', $mapper);
         $this->assertEquals(1, $mapper->getValue('html'));
         $this->assertEquals(2, $mapper->getValue('css'));
         $this->assertEquals(3, $mapper->getValue('xml'));
-        
+
         // Placeholder not mapped
         $this->assertEmpty($mapper->getValue('jpeg'));
     }
-    
+
     public function testCachedData()
     {
         // First mapper instance
-        
-        $mapper1 = new UrlSegmentExtentsionMapper($this->db);
-        
-        $this->assertInstanceOf('Dbrouter\Url\Segment\UrlSegmentExtentsionMapper', $mapper1);
+
+        $mapper1 = new ExtentsionMapper($this->db);
+
+        $this->assertInstanceOf('Dbrouter\Url\Segment\Mapper\ExtentsionMapper', $mapper1);
         $this->assertEquals(1, $mapper1->getValue('html'));
         $this->assertEmpty($mapper1->getValue('jpeg'));
-        
+
         // Second mapper instance
-        
+
         $row = new \stdClass();
         $row->id   = 1;
         $row->name = 'svg';
-        
+
         $db = m::mock('Doctrine\DBAL\Connection');
         $db->shouldReceive('setFetchMode');
         $db->shouldReceive('fetchAll')->andReturn(array($row));
-        
-        $mapper2 = new UrlSegmentExtentsionMapper($db);
-        
-        $this->assertInstanceOf('Dbrouter\Url\Segment\UrlSegmentExtentsionMapper', $mapper2);
+
+        $mapper2 = new ExtentsionMapper($db);
+
+        $this->assertInstanceOf('Dbrouter\Url\Segment\Mapper\ExtentsionMapper', $mapper2);
         $this->assertEquals(1, $mapper2->getValue('html'));
         $this->assertEmpty($mapper2->getValue('jpeg'));
     }
-    
+
     public function testGetTypeID()
     {
         $item = m::mock('Dbrouter\Url\Segment\UrlSegmentItem');
         $item->shouldReceive('getExtentsion')->once()->andReturn('html');
-        
-        $mapper = new UrlSegmentExtentsionMapper($this->db);
-        
-        $this->assertInstanceOf('Dbrouter\Url\Segment\UrlSegmentExtentsionMapper', $mapper);
+
+        $mapper = new ExtentsionMapper($this->db);
+
+        $this->assertInstanceOf('Dbrouter\Url\Segment\Mapper\ExtentsionMapper', $mapper);
         $this->assertEquals(1, $mapper->getExtentsionId($item));
-        
+
     }
 }
-    

@@ -1,6 +1,6 @@
-<?php namespace Dbrouter\Url\Segment;
+<?php namespace Dbrouter\Url\Segment\Mapper;
 
-use Dbrouter\Url\Segment\BaseMapper;
+use Dbrouter\Url\Segment\Mapper\BaseMapper;
 use Dbrouter\Url\Segment\UrlSegmentItem;
 use Dbrouter\Exception\Url\UrlSegmentMapperException;
 use Doctrine\DBAL\Connection;
@@ -15,8 +15,8 @@ use Doctrine\DBAL\Connection;
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
  */
-class UrlSegmentExtentsionMapper extends BaseMapper
-{ 
+class TypeMapper extends BaseMapper
+{
     /**
      * Type map variable.
      *
@@ -39,7 +39,7 @@ class UrlSegmentExtentsionMapper extends BaseMapper
 
         // Load data
 
-        $data = $db->fetchAll('SELECT id, name FROM dbr_extentsiontype');
+        $data = $db->fetchAll('SELECT id, name FROM dbr_segmenttype');
 
         if (empty($data)) {
             throw UrlSegmentMapperException::make('No data loaded!');
@@ -59,9 +59,10 @@ class UrlSegmentExtentsionMapper extends BaseMapper
      * @param   UrlSegmentItem $item
      * @return  interger|null
      */
-    public function getExtentsionId(UrlSegmentItem $item)
+    public function getTypeId(UrlSegmentItem $item)
     {
-        return $this->getValue($item->getExtentsion());
+        return $this->getValue($item->getType());
     }
 
 }
+
