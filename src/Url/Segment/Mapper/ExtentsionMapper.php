@@ -6,7 +6,7 @@ use Dbrouter\Exception\Url\UrlSegmentMapperException;
 use Doctrine\DBAL\Connection;
 
 /**
- * Type mapper class.
+ * Extentsion mapper class.
  *
  * @package    Dbrouter
  * @author     Kai Hempel <dev@kuweh.de>
