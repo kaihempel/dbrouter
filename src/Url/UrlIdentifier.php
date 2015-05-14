@@ -12,48 +12,48 @@ use Dbrouter\Exception\Url\UrlIdentifierException;
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
  */
-class UrlIdentifier 
+class UrlIdentifier
 {
     /**
      * ID value
-     * 
-     * @var integer 
+     *
+     * @var integer
      */
     private $id = NULL;
-           
+
     /**
      * Constructor
-     * 
+     *
      * @param integer $id
      * @throws Dbrouter\Exception\Url\UrlIdentifierException
      */
-    public function __construct($id) 
+    public function __construct($id)
     {
         if ( ! is_numeric($id)) {
             throw UrlIdentifierException::make('Unexpected ID value given!');
         }
-        
-        $this->id = $id;
-    } 
-    
+
+        $this->id = (int)$id;
+    }
+
     /**
      * Returns the identifier
-     * 
+     *
      * @return integer
      */
-    public function getId() 
+    public function getId()
     {
         return $this->id;
     }
-    
+
     /**
      * Checks if the current ID is zero
-     * 
+     *
      * @return boolean
      */
-    public function isEmpty() 
+    public function isEmpty()
     {
         return (empty($this->id)) ? true : false;
     }
-    
+
 }
