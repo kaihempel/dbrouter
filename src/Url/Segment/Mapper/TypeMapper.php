@@ -38,8 +38,13 @@ class TypeMapper extends BaseMapper
 
         // Load data
 
-        $this->executeQuery($db, 'SELECT id, name FROM dbr_segmenttype');
+        $data = $this->executeQuery($db, 'SELECT id, name FROM dbr_segmenttype');
 
+        // Store data
+
+        foreach ($data as $row) {
+            $this->setValue($row->name, $row->id);
+        }
     }
 
     /**

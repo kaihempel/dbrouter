@@ -54,17 +54,11 @@ abstract class BaseMapper
      *
      * @param   Connection          $db             Database connection
      * @param   string              $query          Database query
-     * @return  void
+     * @return  array
      * @throw   UrlSegmentMapperException
      */
     protected function executeQuery(Connection $db, $query)
     {
-        // Check if the ID and NAME will be loaded
-
-        if ( ! preg_match('/`?(id|name)`?,?.*`?(id|name)`?,?/', $query)) {
-            throw UrlSegmentMapperException::make('No data loaded!');
-        }
-
         // Execute query and load data
 
         $data = $db->fetchAll($query);
@@ -73,11 +67,7 @@ abstract class BaseMapper
             throw UrlSegmentMapperException::make('No data loaded!');
         }
 
-        // Store data
-
-        foreach ($data as $row) {
-            $this->setValue($row->name, $row->id);
-        }
+        return $data;
     }
 
     /**

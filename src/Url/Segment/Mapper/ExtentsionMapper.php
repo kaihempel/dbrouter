@@ -38,8 +38,13 @@ class ExtentsionMapper extends BaseMapper
 
         // Load data
 
-        $this->executeQuery($db, 'SELECT id, name FROM dbr_extentsiontype');
+        $data = $this->executeQuery($db, 'SELECT id, name FROM dbr_extentsiontype');
 
+        // Store data
+
+        foreach ($data as $row) {
+            $this->setValue($row->name, $row->id);
+        }
     }
 
     /**
