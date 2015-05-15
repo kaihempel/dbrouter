@@ -2,7 +2,6 @@
 
 use Dbrouter\Url\Segment\Mapper\BaseMapper;
 use Dbrouter\Url\Segment\UrlSegmentItem;
-use Dbrouter\Exception\Url\UrlSegmentMapperException;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -39,17 +38,7 @@ class TypeMapper extends BaseMapper
 
         // Load data
 
-        $data = $db->fetchAll('SELECT id, name FROM dbr_segmenttype');
-
-        if (empty($data)) {
-            throw UrlSegmentMapperException::make('No data loaded!');
-        }
-
-        // Store data
-
-        foreach ($data as $row) {
-            $this->setValue($row->name, $row->id);
-        }
+        $this->executeQuery($db, 'SELECT id, name FROM dbr_segmenttype');
 
     }
 

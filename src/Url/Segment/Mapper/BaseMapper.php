@@ -1,5 +1,6 @@
 <?php namespace Dbrouter\Url\Segment\Mapper;
 
+use Dbrouter\Exception\Url\UrlSegmentMapperException;
 use Doctrine\DBAL\Connection;
 use PDO;
 
@@ -27,7 +28,7 @@ abstract class BaseMapper
     /**
      * Constructor
      *
-     * @param Connection $db
+     * @param Connection            $db             Database connection
      */
     public function __construct(Connection $db)
     {
@@ -43,14 +44,46 @@ abstract class BaseMapper
     /**
      * Loads the mapping data
      *
-     * @param Connection $db
+     * @param Connection            $db             Database connection
      * @return void
      */
     abstract protected function load(Connection $db);
 
     /**
+     * Executes the query and stores the data
      *
-     * @return type
+     * @param   Connection          $db             Database connection
+     * @param   string              $query          Database query
+     * @return  void
+     * @throw   UrlSegmentMapperException
+     */
+    protected function executeQuery(Connection $db, $query)
+    {
+        // Check if the ID and NAME will be loaded
+
+        if ( ! preg_match('/`?(id|name)`?,?.*`?(id|name)`?,?/', $query)) {
+            throw UrlSegmentMapperException::make('No data loaded!');
+        }
+
+        // Execute query and load data
+
+        $data = $db->fetchAll($query);
+
+        if (empty($data)) {
+            throw UrlSegmentMapperException::make('No data loaded!');
+        }
+
+        // Store data
+
+        foreach ($data as $row) {
+            $this->setValue($row->name, $row->id);
+        }
+    }
+
+    /**
+     * Checks if the map is empty
+     *
+     * @return boolean
      */
     public function isEmpty()
     {
@@ -60,7 +93,7 @@ abstract class BaseMapper
     /**
      * Returns the mapped data value to the given key
      *
-     * @param   string|integer $key
+     * @param   string|integer      $key            Current data key
      * @return  mixed|null
      */
     public function getValue($key)
@@ -74,8 +107,9 @@ abstract class BaseMapper
 
     /**
      *
-     * @param type $key
-     * @param type $value
+     * @param   string|integer      $key            Current data key
+     * @param   string|integer      $value          Current data
+     * @return  void
      */
     public function setValue($key, $value)
     {
