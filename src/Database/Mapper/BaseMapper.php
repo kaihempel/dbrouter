@@ -1,6 +1,6 @@
-<?php namespace Dbrouter\Url\Segment\Mapper;
+<?php namespace Dbrouter\Database\Mapper;
 
-use Dbrouter\Exception\Url\UrlSegmentMapperException;
+use Dbrouter\Exception\Database\MapperException;
 use Doctrine\DBAL\Connection;
 use PDO;
 
@@ -64,7 +64,7 @@ abstract class BaseMapper
         $data = $db->fetchAll($query);
 
         if (empty($data)) {
-            throw UrlSegmentMapperException::make('No data loaded!');
+            throw MapperException::make('No data loaded!');
         }
 
         return $data;

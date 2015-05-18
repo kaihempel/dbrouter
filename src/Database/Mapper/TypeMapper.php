@@ -1,6 +1,6 @@
-<?php namespace Dbrouter\Url\Segment\Mapper;
+<?php namespace Dbrouter\Database\Mapper;
 
-use Dbrouter\Url\Segment\Mapper\BaseMapper;
+use Dbrouter\Database\Mapper\BaseMapper;
 use Dbrouter\Url\Segment\UrlSegmentItem;
 use Doctrine\DBAL\Connection;
 

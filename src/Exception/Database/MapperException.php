@@ -1,4 +1,4 @@
-<?php  namespace Dbrouter\Exception\Url;
+<?php  namespace Dbrouter\Exception\Database;
 
 use Dbrouter\Exception\DbrouterException;
 
@@ -12,6 +12,6 @@ use Dbrouter\Exception\DbrouterException;
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
  */
-class UrlSegmentMapperException extends DbrouterException {
-    
+class MapperException extends DbrouterException {
+
 }

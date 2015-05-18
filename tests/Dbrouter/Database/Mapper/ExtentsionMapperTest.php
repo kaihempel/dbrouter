@@ -1,4 +1,4 @@
-<?php  namespace Dbrouter\Url\Segment\Mapper;
+<?php  namespace Dbrouter\Database\Mapper;
 
 use PHPUnit_Framework_TestCase;
 use Mockery as m;
@@ -38,7 +38,7 @@ class ExtentsionMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Dbrouter\Exception\Url\UrlSegmentMapperException
+     * @expectedException Dbrouter\Exception\Database\MapperException
      */
     public function testLoadException()
     {
@@ -53,7 +53,7 @@ class ExtentsionMapperTest extends PHPUnit_Framework_TestCase
     {
         $mapper = new ExtentsionMapper($this->db);
 
-        $this->assertInstanceOf('Dbrouter\Url\Segment\Mapper\ExtentsionMapper', $mapper);
+        $this->assertInstanceOf('Dbrouter\Database\Mapper\ExtentsionMapper', $mapper);
         $this->assertEquals(1, $mapper->getValue('html'));
         $this->assertEquals(2, $mapper->getValue('css'));
         $this->assertEquals(3, $mapper->getValue('xml'));
@@ -68,7 +68,7 @@ class ExtentsionMapperTest extends PHPUnit_Framework_TestCase
 
         $mapper1 = new ExtentsionMapper($this->db);
 
-        $this->assertInstanceOf('Dbrouter\Url\Segment\Mapper\ExtentsionMapper', $mapper1);
+        $this->assertInstanceOf('Dbrouter\Database\Mapper\ExtentsionMapper', $mapper1);
         $this->assertEquals(1, $mapper1->getValue('html'));
         $this->assertEmpty($mapper1->getValue('jpeg'));
 
@@ -84,7 +84,7 @@ class ExtentsionMapperTest extends PHPUnit_Framework_TestCase
 
         $mapper2 = new ExtentsionMapper($db);
 
-        $this->assertInstanceOf('Dbrouter\Url\Segment\Mapper\ExtentsionMapper', $mapper2);
+        $this->assertInstanceOf('Dbrouter\Database\Mapper\ExtentsionMapper', $mapper2);
         $this->assertEquals(1, $mapper2->getValue('html'));
         $this->assertEmpty($mapper2->getValue('jpeg'));
     }
@@ -96,7 +96,7 @@ class ExtentsionMapperTest extends PHPUnit_Framework_TestCase
 
         $mapper = new ExtentsionMapper($this->db);
 
-        $this->assertInstanceOf('Dbrouter\Url\Segment\Mapper\ExtentsionMapper', $mapper);
+        $this->assertInstanceOf('Dbrouter\Database\Mapper\ExtentsionMapper', $mapper);
         $this->assertEquals(1, $mapper->getExtentsionId($item));
 
     }

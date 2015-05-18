@@ -1,4 +1,4 @@
-<?php namespace Dbrouter\Url\Segment\Mapper;
+<?php namespace Dbrouter\Database\Mapper;
 
 use PHPUnit_Framework_TestCase;
 use Mockery as m;
@@ -38,7 +38,7 @@ class TypeMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Dbrouter\Exception\Url\UrlSegmentMapperException
+     * @expectedException Dbrouter\Exception\Database\MapperException
      */
     public function testLoadException()
     {
@@ -53,7 +53,7 @@ class TypeMapperTest extends PHPUnit_Framework_TestCase
     {
         $mapper = new TypeMapper($this->db);
 
-        $this->assertInstanceOf('Dbrouter\Url\Segment\Mapper\TypeMapper', $mapper);
+        $this->assertInstanceOf('Dbrouter\Database\Mapper\TypeMapper', $mapper);
         $this->assertEquals(1, $mapper->getValue('path'));
         $this->assertEquals(2, $mapper->getValue('file'));
         $this->assertEquals(3, $mapper->getValue('wildcard'));
@@ -68,7 +68,7 @@ class TypeMapperTest extends PHPUnit_Framework_TestCase
 
         $mapper1 = new TypeMapper($this->db);
 
-        $this->assertInstanceOf('Dbrouter\Url\Segment\Mapper\TypeMapper', $mapper1);
+        $this->assertInstanceOf('Dbrouter\Database\Mapper\TypeMapper', $mapper1);
         $this->assertEquals(1, $mapper1->getValue('path'));
         $this->assertEmpty($mapper1->getValue('placeholder'));
 
@@ -84,7 +84,7 @@ class TypeMapperTest extends PHPUnit_Framework_TestCase
 
         $mapper2 = new TypeMapper($db);
 
-        $this->assertInstanceOf('Dbrouter\Url\Segment\Mapper\TypeMapper', $mapper2);
+        $this->assertInstanceOf('Dbrouter\Database\Mapper\TypeMapper', $mapper2);
         $this->assertEquals(1, $mapper2->getValue('path'));
         $this->assertEmpty($mapper2->getValue('placeholder'));
     }
@@ -96,7 +96,7 @@ class TypeMapperTest extends PHPUnit_Framework_TestCase
 
         $mapper = new TypeMapper($this->db);
 
-        $this->assertInstanceOf('Dbrouter\Url\Segment\Mapper\TypeMapper', $mapper);
+        $this->assertInstanceOf('Dbrouter\Database\Mapper\TypeMapper', $mapper);
         $this->assertEquals(1, $mapper->getTypeId($item));
 
     }
