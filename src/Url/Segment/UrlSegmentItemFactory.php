@@ -19,13 +19,14 @@ class UrlSegmentItemFactory
 
     /**
      * Initialize one item object
-     * 
-     * @param string $segment
-     * @param \Dbrouter\Url\UrlIdentifier $id
-     * @return \Dbrouter\Url\Segment\UrlSegmentItem
-     * @throws \Dbrouter\Url\Segment\UrlSegmentItemException
+     *
+     * @param   string                  $segment
+     * @param   UrlIdentifier           $urlId
+     * @param   UrlSegmentIdentifier    $id
+     * @return  UrlSegmentItem
+     * @throws  UrlSegmentItemException
      */
-    public static function make($segment, $id = NULL)
+    public static function make($segment, $urlId = NULL, $id = NULL)
     {
 
         if (empty($segment) || ! is_string($segment)) {
@@ -34,10 +35,14 @@ class UrlSegmentItemFactory
 
         // Create item instance
 
-        if ( ! empty($id) && $id instanceof \Dbrouter\Url\UrlIdentifier) {
-            $item = self::makeItemWithId($segment, $id);
-        } else {
-            $item = self::makeItem($segment);
+        $item = new UrlSegmentItem($segment);
+
+        if ( ! empty($urlId) && $urlId instanceof \Dbrouter\Url\UrlIdentifier) {
+            $item->setUrlId($urlId);
+        }
+
+        if ( ! empty($id) && $id instanceof \Dbrouter\Url\Segment\UrlSegmentIdentifier) {
+            $item->setId($id);
         }
 
         // Attach analyzer to current item
@@ -45,29 +50,6 @@ class UrlSegmentItemFactory
         $item->attachAnalyzer(new UrlSegmentAnalyzer());
 
         return $item;
-    }
-
-    /**
-     * Initialize url segment item object
-     * 
-     * @param string $segment
-     * @return \Dbrouter\Url\Segment\UrlSegmentItem
-     */
-    private static function makeItem($segment)
-    {
-        return new UrlSegmentItem($segment);
-    }
-
-    /**
-     * Initialize url segment item object wíth url identifier object 
-     * 
-     * @param string $segment
-     * @param \Dbrouter\Url\UrlIdentifier $id
-     * @return \Dbrouter\Url\Segment\UrlSegmentItem
-     */
-    private static function makeItemWithId($segment, UrlIdentifier $id)
-    {
-        return new UrlSegmentItem($segment, $id);
     }
 
 }
