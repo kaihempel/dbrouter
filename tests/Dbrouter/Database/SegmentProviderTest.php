@@ -37,6 +37,7 @@ class ExtentsionMapperTest extends PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\Dbrouter\Database\SegmentProvider', $provider);
         $this->assertEmpty($provider->getUrlId());
+        $this->assertEmpty($provider->getItems());
     }
 
     public function testNewProviderWithUrl()
@@ -60,6 +61,7 @@ class ExtentsionMapperTest extends PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\Dbrouter\Database\SegmentProvider', $provider);
         $this->assertEquals(1, $provider->getUrlId());
+        $this->assertEquals($item, $provider->getItems());
     }
 
     public function testGetUrlIdFromItem()
@@ -242,6 +244,52 @@ class ExtentsionMapperTest extends PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\Dbrouter\Database\SegmentProvider', $provider);
         $this->assertInstanceOf('\Dbrouter\Database\SegmentProvider', $provider->save());
+    }
+
+    public function testLoadItem()
+    {
+        // Extend DB mock
+
+        $row1 = new \stdClass();
+        $row1->id   = 1;
+        $row1->segment = 'test';
+
+	$row2 = new \stdClass();
+        $row2->id   = 2;
+        $row2->segment = 'path';
+
+        $row3 = new \stdClass();
+        $row3->id   = 3;
+        $row3->segment = 'file.txt';
+
+        $stmt = m::mock('\Doctrine\DBAL\Driver\Statement');
+        $stmt->shouldReceive('fetchAll')->andReturn(array($row1, $row2, $row3));
+
+        $qb = m::mock('Doctrine\DBAL\Query\QueryBuilder');
+        $qb->shouldReceive('select')->andReturnSelf();
+        $qb->shouldReceive('from')->andReturnSelf();
+        $qb->shouldReceive('leftJoin')->andReturnSelf();
+        $qb->shouldReceive('where')->andReturnSelf();
+        $qb->shouldReceive('orderBy')->andReturnSelf();
+        $qb->shouldReceive('setParameter')->andReturnSelf();
+        $qb->shouldReceive('execute')->andReturn($stmt);
+
+        // Add querybuilder to db mock
+
+        $this->db->shouldReceive('createQueryBuilder')->andReturn($qb);
+
+        // Url identifier mock
+
+        $urlId = m::mock('Dbrouter\Url\UrlIdentifier');
+        $urlId->shouldReceive('getId')->andReturn(1);
+
+        // Test the provider
+
+        $provider = new SegmentProvider($this->db);
+        $provider->load($urlId);
+
+        $this->assertInstanceOf('\Dbrouter\Database\SegmentProvider', $provider);
+        $this->assertInstanceOf('\Dbrouter\Url\Segment\UrlSegmentItem', $provider->getItems());
     }
 
     /**

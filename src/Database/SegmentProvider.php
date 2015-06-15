@@ -4,6 +4,7 @@ use Dbrouter\Database\Mapper\TypeMapper;
 use Dbrouter\Database\Mapper\ExtentsionMapper;
 use Dbrouter\Url\Segment\UrlSegmentItem;
 use Dbrouter\Url\Segment\UrlSegmentIdentifier;
+use Dbrouter\Url\Segment\UrlSegmentItemFactory;
 use Dbrouter\Url\UrlIdentifier;
 use Dbrouter\Url\Url;
 use Dbrouter\Exception\Database\DataProviderException;
@@ -130,6 +131,16 @@ class SegmentProvider extends DataProvider
         // Return self for chaining
 
         return $this;
+    }
+
+    /**
+     * Returns all stored items as itemchain
+     *
+     * @return  UrlSegmentItem
+     */
+    public function getItems()
+    {
+        return $this->item;
     }
 
     /**
@@ -321,7 +332,73 @@ class SegmentProvider extends DataProvider
      *
      * @return DataProvider
      */
-    public function load() {
+    public function load(UrlIdentifier $urlId)
+    {
+        // Initialize the querybuilder.
 
+        $querybuilder = $this->db->createQueryBuilder();
+
+        // Build the select query.
+        //
+        // The data orderd descending to support a easy top to bottom build!
+
+        $querybuilder->select('seg.id', 'seg.segment')
+                     ->from('dbr_url', 'url')
+                     ->leftJoin('url', 'dbr_url_urlsegement', 'segmap', 'url.id = segmap.dbr_url_id')
+                     ->leftJoin('segmap', 'dbr_urlsegment', 'seg', 'segmap.dbr_urlsegment_id = seg.id')
+                     ->where('url.id = ?')
+                     ->orderBy('segmap.position DESC');
+
+        // Add url ID.
+
+        $querybuilder->setParameter(0, $urlId->getId());
+
+        // Execute query.
+
+        $rows = $querybuilder->execute()->fetchAll();
+
+        if ( ! empty($rows)) {
+            $this->storeLoadedItemChain($rows);
+        }
+
+        // Return self
+
+        return $this;
     }
+
+    /**
+     * Stores the loaded rows as item chain
+     *
+     * @param   array $rows
+     * @return  void
+     */
+    private function storeLoadedItemChain(array $rows)
+    {
+
+        // Loop thru all rows
+
+        $current = null;
+        foreach ($rows as $row) {
+            $new = UrlSegmentItemFactory::make($row->segment, $this->getUrlId(), new UrlSegmentIdentifier($row->id));
+
+            // If current is already empty, store the created
+
+            if (empty($current)) {
+                $current = $new;
+
+            // Otherwise attach the new one as Item below and set it as new current.
+            // The loop will go forward and build the chain from top to bottom.
+
+            } else {
+                $current->attachSegmentItemBelow($new);
+                $current = $new;
+            }
+
+        }
+
+        // Register current after the last loop
+
+        $this->item = $current;
+    }
+
 }

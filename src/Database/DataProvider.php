@@ -1,6 +1,7 @@
 <?php namespace Dbrouter\Database;
 
 use Dbrouter\Url\Url;
+use Dbrouter\Url\UrlIdentifier;
 use Doctrine\DBAL\Connection;
 use PDO;
 
@@ -103,5 +104,5 @@ abstract class DataProvider
      *
      * @return DataProvider
      */
-    abstract public function load();
+    abstract public function load(UrlIdentifier $urlId);
 }
