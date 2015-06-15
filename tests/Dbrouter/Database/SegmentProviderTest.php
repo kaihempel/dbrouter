@@ -1,10 +1,10 @@
-<?php  namespace Dbrouter\Database;
+<?php namespace Dbrouter\Database;
 
 use PHPUnit_Framework_TestCase;
 use Mockery as m;
 
 /**
- * Url segment parser item test
+ * Url segment dataprovider test
  *
  * @package    Dbrouter
  * @subpackage tests
@@ -14,7 +14,7 @@ use Mockery as m;
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
  */
-class ExtentsionMapperTest extends PHPUnit_Framework_TestCase
+class SegmentProviderTest extends PHPUnit_Framework_TestCase
 {
     protected $db = NULL;
 

@@ -13,7 +13,7 @@ use PDO;
 use Carbon\Carbon;
 
 /**
- * Base dataprovider class
+ * Segment dataprovider class
  *
  * @package    Dynamicuri
  * @author     Kai Hempel <dev@kuweh.de>
@@ -49,10 +49,11 @@ class SegmentProvider extends DataProvider
     private $position = 1;
 
     /**
+     * Constructor
      *
-     * @param Connection $db
-     * @param Url $url
-     * @return void
+     * @param   Connection          $db         Doctrine DBAL database connection
+     * @param   Url                 $url        Optional: Url instance
+     * @return  void
      */
     public function __construct(Connection $db, $url = NULL)
     {
@@ -85,7 +86,7 @@ class SegmentProvider extends DataProvider
     /**
      * Sets the items
      *
-     * @param   UrlSegmentItem $item
+     * @param   UrlSegmentItem      $item
      * @return  SegmentProvider
      */
     public function setSegmentItem(UrlSegmentItem $item)
