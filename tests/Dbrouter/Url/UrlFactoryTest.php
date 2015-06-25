@@ -45,7 +45,7 @@ class UrlFactoryTest extends PHPUnit_Framework_TestCase
         // Item one normaly should return item two. But in this case
         // getAbove should not becalled!
 
-        $item1->shouldReceive('getAbove')->never();
+        $item1->shouldReceive('getAbove')->never()->andReturn($item2);
 
         $data = array();
         $data['url']            = 'test/path/';
@@ -55,6 +55,42 @@ class UrlFactoryTest extends PHPUnit_Framework_TestCase
         $data['weight']         = 6;
         $data['usesPlaceholder']= false;
         $data['usesWildcard']   = false;
+
+        $url = UrlFactory::make($data);
+
+        $this->assertInstanceOf('Dbrouter\Url\Url', $url);
+        $this->assertEquals('test/path/', $url->getRawUrl());
+        $this->assertInstanceOf('Dbrouter\Url\UrlIdentifier', $url->getId());
+        $this->assertEquals(1, $url->getId()->getId());
+        $this->assertEquals(2, $url->getSegmentcount());
+        $this->assertEquals(6, $url->getWeight());
+        $this->assertFalse($url->usesPlaceholder());
+        $this->assertFalse($url->usesWildcard());
+    }
+
+    public function testCreateWithOtherDataKeys()
+    {
+        $urlId = m::mock('Dbrouter\Url\UrlIdentifier');
+        $urlId->shouldReceive('getId')->once()->andReturn(1);
+
+        $item1 = m::mock('Dbrouter\Url\Segment\UrlSegmentItem');
+        $item1->shouldReceive('isFirstItem')->once()->andReturn(true);
+
+        $item2 = m::mock('Dbrouter\Url\Segment\UrlSegmentItem');
+
+        // Item one normaly should return item two. But in this case
+        // getAbove should not becalled!
+
+        $item1->shouldReceive('getAbove')->never()->andReturn($item2);;
+
+        $data = array();
+        $data['url']            = 'test/path/';
+        $data['id']             = $urlId;
+        $data['segments']       = $item1;
+        $data['segmentcount']   = 2;
+        $data['weight']         = 6;
+        $data['uses_placeholder']= false;
+        $data['uses_wildcard']   = false;
 
         $url = UrlFactory::make($data);
 

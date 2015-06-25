@@ -1,6 +1,7 @@
 <?php namespace Dbrouter\Url;
 
 use Dbrouter\Exception\Url\UrlException;
+use Dbrouter\Url\Segment\UrlSegmentItem;
 
 /**
  * UrlFactory container class
@@ -73,15 +74,15 @@ class UrlFactory
             $url->setWeight($data['weight']);
         }
 
-        // Placeholde
+        // Placeholder
         //
         // Supported keys: "uses_placeholde" and "usesPlaceholders
 
-        if (isset($data['uses_placeholder']) && is_numeric($data['uses_placeholder'])) {
+        if (isset($data['uses_placeholder']) && is_bool($data['uses_placeholder'])) {
             $url->setUsesPlaceholder($data['uses_placeholder']);
         }
 
-        if (isset($data['usesPlaceholder']) && is_numeric($data['usesPlaceholder'])) {
+        if (isset($data['usesPlaceholder']) && is_bool($data['usesPlaceholder'])) {
             $url->setUsesPlaceholder($data['usesPlaceholder']);
         }
 
@@ -89,12 +90,12 @@ class UrlFactory
         //
         // Supported keys: "uses_wildcard" and "usesWildcard"
 
-        if (isset($data['uses_wildcard']) && is_numeric($data['uses_wildcard'])) {
-            $url->setUsesPlaceholder($data['uses_wildcard']);
+        if (isset($data['uses_wildcard']) && is_bool($data['uses_wildcard'])) {
+            $url->setUsesWildcard($data['uses_wildcard']);
         }
 
-        if (isset($data['usesWildcard']) && is_numeric($data['usesWildcard'])) {
-            $url->setUsesPlaceholder($data['usesWildcard']);
+        if (isset($data['usesWildcard']) && is_bool($data['usesWildcard'])) {
+            $url->setUsesWildcard($data['usesWildcard']);
         }
     }
 }
