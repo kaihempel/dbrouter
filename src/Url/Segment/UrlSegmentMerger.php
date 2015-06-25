@@ -1,5 +1,6 @@
 <?php namespace Dbrouter\Url\Segment;
 
+use Dbrouter\Url\Url;
 use Dbrouter\Url\Segment\UrlSegmentItem;
 use Dbrouter\Exception\Url\UrlException;
 
@@ -15,8 +16,6 @@ use Dbrouter\Exception\Url\UrlException;
  */
 class UrlSegmentMerger
 {
-    const MAX_SEGMENTS = 255;
-
     /**
      * Resulting url string
      *
@@ -49,39 +48,10 @@ class UrlSegmentMerger
     public function merge(UrlSegmentItem $item) {
 
         if ( ! $item->isFirstItem()) {
-            $item = $this->setChainOnFirstItem($item);
+            $item = Url::setChainOnFirstItem($item);
         }
 
         $this->mergeItemValues($item);
-    }
-
-    /**
-     * Set the given item chain on the first item
-     *
-     * @param   UrlSegmentItem $item
-     * @return  UrlSegmentItem $item
-     */
-    private function setChainOnFirstItem(UrlSegmentItem $item)
-    {
-        $count = 0;
-
-        // Loops to the first item.
-
-        while ( ! $item->isFirstItem()) {
-
-            // Emergency exits check.
-
-            if ($count > self::MAX_SEGMENTS) {
-                throw UrlException::make('Merge process reached max segment count!');
-            }
-
-            // Reset item on the below one and increment count.
-
-            $item = $item->getBelow();
-            $count++;
-        }
-
-        return $item;
     }
 
     /**
@@ -99,7 +69,7 @@ class UrlSegmentMerger
 
             // Emergency exits check.
 
-            if ($count > self::MAX_SEGMENTS) {
+            if ($count > Url::MAX_SEGMENTS) {
                 throw UrlException::make('Merge process reached max segment count!');
             }
 

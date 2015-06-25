@@ -145,6 +145,7 @@ class SegmentProvider extends DataProvider
     }
 
     /**
+     * Set the item position manualy
      *
      * @param   integer             $position
      * @return  SegmentProvider

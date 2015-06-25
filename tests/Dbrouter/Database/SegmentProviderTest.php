@@ -48,10 +48,15 @@ class SegmentProviderTest extends PHPUnit_Framework_TestCase
         $item->shouldReceive('isFirstItem')->once()->andReturn(true);
         $item->shouldReceive('getAbove')->once()->andReturnNull();
 
+        // Create url id mock
+
+        $urlId = m::mock('Dbrouter\Url\UrlIdentifier');
+        $urlId->shouldReceive('getId')->once()->andReturn(1);
+
         // Create url mock
 
         $url = m::mock('Dbrouter\Url\Url');
-        $url->shouldReceive('getId')->once()->andReturn(1);
+        $url->shouldReceive('getId')->once()->andReturn($urlId);
         $url->shouldReceive('getSegmentcount')->once()->andReturn(1);
         $url->shouldReceive('getSegments')->once()->andReturn($item);
 
@@ -60,7 +65,7 @@ class SegmentProviderTest extends PHPUnit_Framework_TestCase
         $provider = new SegmentProvider($this->db, $url);
 
         $this->assertInstanceOf('\Dbrouter\Database\SegmentProvider', $provider);
-        $this->assertEquals(1, $provider->getUrlId());
+        $this->assertInstanceOf('\Dbrouter\Url\UrlIdentifier', $provider->getUrlId());
         $this->assertEquals($item, $provider->getItems());
     }
 
@@ -249,21 +254,23 @@ class SegmentProviderTest extends PHPUnit_Framework_TestCase
     public function testLoadItem()
     {
         // Extend DB mock
-
-        $row1 = new \stdClass();
-        $row1->id   = 1;
-        $row1->segment = 'test';
-
-	$row2 = new \stdClass();
-        $row2->id   = 2;
-        $row2->segment = 'path';
+        //
+        // Items selected in descending order depending on there position
 
         $row3 = new \stdClass();
         $row3->id   = 3;
         $row3->segment = 'file.txt';
 
+        $row2 = new \stdClass();
+        $row2->id   = 2;
+        $row2->segment = 'path';
+
+        $row1 = new \stdClass();
+        $row1->id   = 1;
+        $row1->segment = 'test';
+
         $stmt = m::mock('\Doctrine\DBAL\Driver\Statement');
-        $stmt->shouldReceive('fetchAll')->andReturn(array($row1, $row2, $row3));
+        $stmt->shouldReceive('fetchAll')->andReturn(array($row3, $row2, $row1));
 
         $qb = m::mock('Doctrine\DBAL\Query\QueryBuilder');
         $qb->shouldReceive('select')->andReturnSelf();
@@ -290,6 +297,8 @@ class SegmentProviderTest extends PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\Dbrouter\Database\SegmentProvider', $provider);
         $this->assertInstanceOf('\Dbrouter\Url\Segment\UrlSegmentItem', $provider->getItems());
+        $this->assertTrue($provider->getItems()->isFirstItem());
+        $this->assertEquals('test', $provider->getItems()->getValue());
     }
 
     /**
