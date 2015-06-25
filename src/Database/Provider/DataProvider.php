@@ -1,4 +1,4 @@
-<?php namespace Dbrouter\Database;
+<?php namespace Dbrouter\Database\Provider;
 
 use Dbrouter\Url\Url;
 use Dbrouter\Url\UrlIdentifier;

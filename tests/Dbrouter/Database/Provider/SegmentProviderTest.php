@@ -1,4 +1,4 @@
-<?php namespace Dbrouter\Database;
+<?php namespace Dbrouter\Database\Provider;
 
 use PHPUnit_Framework_TestCase;
 use Mockery as m;
@@ -35,7 +35,7 @@ class SegmentProviderTest extends PHPUnit_Framework_TestCase
     {
         $provider = new SegmentProvider($this->db);
 
-        $this->assertInstanceOf('\Dbrouter\Database\SegmentProvider', $provider);
+        $this->assertInstanceOf('\Dbrouter\Database\Provider\SegmentProvider', $provider);
         $this->assertEmpty($provider->getUrlId());
         $this->assertEmpty($provider->getItems());
     }
@@ -64,7 +64,7 @@ class SegmentProviderTest extends PHPUnit_Framework_TestCase
 
         $provider = new SegmentProvider($this->db, $url);
 
-        $this->assertInstanceOf('\Dbrouter\Database\SegmentProvider', $provider);
+        $this->assertInstanceOf('\Dbrouter\Database\Provider\SegmentProvider', $provider);
         $this->assertInstanceOf('\Dbrouter\Url\UrlIdentifier', $provider->getUrlId());
         $this->assertEquals($item, $provider->getItems());
     }
@@ -84,7 +84,7 @@ class SegmentProviderTest extends PHPUnit_Framework_TestCase
         $provider = new SegmentProvider($this->db);
         $provider->setSegmentItem($item);
 
-        $this->assertInstanceOf('\Dbrouter\Database\SegmentProvider', $provider);
+        $this->assertInstanceOf('\Dbrouter\Database\Provider\SegmentProvider', $provider);
         $this->assertEquals(2, $provider->getUrlId());
     }
 
@@ -121,8 +121,8 @@ class SegmentProviderTest extends PHPUnit_Framework_TestCase
         $provider = new SegmentProvider($this->db);
         $provider->setSegmentItem($item);
 
-        $this->assertInstanceOf('\Dbrouter\Database\SegmentProvider', $provider);
-        $this->assertInstanceOf('\Dbrouter\Database\SegmentProvider', $provider->save());
+        $this->assertInstanceOf('\Dbrouter\Database\Provider\SegmentProvider', $provider);
+        $this->assertInstanceOf('\Dbrouter\Database\Provider\SegmentProvider', $provider->save());
     }
 
     public function testSaveNewSingleItem()
@@ -161,8 +161,8 @@ class SegmentProviderTest extends PHPUnit_Framework_TestCase
         $provider->setSegmentItem($item);
         $provider->setPosition(1);
 
-        $this->assertInstanceOf('\Dbrouter\Database\SegmentProvider', $provider);
-        $this->assertInstanceOf('\Dbrouter\Database\SegmentProvider', $provider->save());
+        $this->assertInstanceOf('\Dbrouter\Database\Provider\SegmentProvider', $provider);
+        $this->assertInstanceOf('\Dbrouter\Database\Provider\SegmentProvider', $provider->save());
     }
 
     public function testSaveNewItemChain()
@@ -247,8 +247,8 @@ class SegmentProviderTest extends PHPUnit_Framework_TestCase
         $provider = new SegmentProvider($this->db);
         $provider->setSegmentItem($item1);
 
-        $this->assertInstanceOf('\Dbrouter\Database\SegmentProvider', $provider);
-        $this->assertInstanceOf('\Dbrouter\Database\SegmentProvider', $provider->save());
+        $this->assertInstanceOf('\Dbrouter\Database\Provider\SegmentProvider', $provider);
+        $this->assertInstanceOf('\Dbrouter\Database\Provider\SegmentProvider', $provider->save());
     }
 
     public function testLoadItem()
@@ -295,7 +295,7 @@ class SegmentProviderTest extends PHPUnit_Framework_TestCase
         $provider = new SegmentProvider($this->db);
         $provider->load($urlId);
 
-        $this->assertInstanceOf('\Dbrouter\Database\SegmentProvider', $provider);
+        $this->assertInstanceOf('\Dbrouter\Database\Provider\SegmentProvider', $provider);
         $this->assertInstanceOf('\Dbrouter\Url\Segment\UrlSegmentItem', $provider->getItems());
         $this->assertTrue($provider->getItems()->isFirstItem());
         $this->assertEquals('test', $provider->getItems()->getValue());

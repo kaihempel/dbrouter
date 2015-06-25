@@ -1,4 +1,4 @@
-<?php  namespace Dbrouter\Database;
+<?php  namespace Dbrouter\Database\Provider;
 
 use PHPUnit_Framework_TestCase;
 use Mockery as m;
@@ -35,7 +35,7 @@ class UrlProviderTest extends PHPUnit_Framework_TestCase
     {
         $provider = new UrlProvider($this->db);
 
-        $this->assertInstanceOf('\Dbrouter\Database\UrlProvider', $provider);
+        $this->assertInstanceOf('\Dbrouter\Database\Provider\UrlProvider', $provider);
         $this->assertEmpty($provider->getUrlId());
         $this->assertEmpty($provider->getUrl());
     }
@@ -64,7 +64,7 @@ class UrlProviderTest extends PHPUnit_Framework_TestCase
 
         $provider = new UrlProvider($this->db, $url);
 
-        $this->assertInstanceOf('\Dbrouter\Database\UrlProvider', $provider);
+        $this->assertInstanceOf('\Dbrouter\Database\Provider\UrlProvider', $provider);
         $this->assertInstanceOf('\Dbrouter\Url\UrlIdentifier', $provider->getUrlId());
         $this->assertEquals(1, $provider->getUrlId()->getId());
         $this->assertEquals($url, $provider->getUrl());
@@ -95,7 +95,7 @@ class UrlProviderTest extends PHPUnit_Framework_TestCase
         $provider = new UrlProvider($this->db);
         $provider->setUrl($url);
 
-        $this->assertInstanceOf('\Dbrouter\Database\UrlProvider', $provider);
+        $this->assertInstanceOf('\Dbrouter\Database\Provider\UrlProvider', $provider);
         $this->assertInstanceOf('\Dbrouter\Url\UrlIdentifier', $provider->getUrlId());
         $this->assertEquals(1, $provider->getUrlId()->getId());
         $this->assertEquals($url, $provider->getUrl());
@@ -151,7 +151,7 @@ class UrlProviderTest extends PHPUnit_Framework_TestCase
         $provider = new UrlProvider($this->db, $url);
         $provider->save();
 
-        $this->assertInstanceOf('\Dbrouter\Database\UrlProvider', $provider);
+        $this->assertInstanceOf('\Dbrouter\Database\Provider\UrlProvider', $provider);
         $this->assertInstanceOf('\Dbrouter\Url\UrlIdentifier', $provider->getUrlId());
         $this->assertEquals(1, $provider->getUrlId()->getId());
         $this->assertEquals($url, $provider->getUrl());
@@ -220,7 +220,7 @@ class UrlProviderTest extends PHPUnit_Framework_TestCase
         $provider = new UrlProvider($this->db);
         $provider->load($urlId);
 
-        $this->assertInstanceOf('Dbrouter\Database\UrlProvider', $provider);
+        $this->assertInstanceOf('Dbrouter\Database\Provider\UrlProvider', $provider);
         $this->assertInstanceOf('Dbrouter\Url\Url', $provider->getUrl());
         $this->assertEquals('/test/path/file.txt', $provider->getUrl()->getRawUrl());
     }

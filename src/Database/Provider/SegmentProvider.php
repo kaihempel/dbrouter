@@ -1,4 +1,4 @@
-<?php namespace Dbrouter\Database;
+<?php namespace Dbrouter\Database\Provider;
 
 use Dbrouter\Database\Mapper\TypeMapper;
 use Dbrouter\Database\Mapper\ExtentsionMapper;
