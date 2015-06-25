@@ -1,4 +1,4 @@
-<?php  namespace Dbrouter\Exception\Database;
+<?php namespace Dbrouter\Exception\Database;
 
 use Dbrouter\Exception\DbrouterException;
 

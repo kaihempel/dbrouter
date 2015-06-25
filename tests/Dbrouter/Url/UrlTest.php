@@ -59,6 +59,37 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(6, $url->getWeight());
     }
 
+    public function testSetId()
+    {
+        $urlId = m::mock('Dbrouter\Url\UrlIdentifier');
+        $urlId->shouldReceive('getId')->andReturn(1);
+
+        $url = new Url($this->testurl);
+        $url->setId($urlId);
+
+        $this->assertInstanceOf('Dbrouter\Url\Url', $url);
+        $this->assertTrue($url->hasId());
+        $this->assertInstanceOf('Dbrouter\Url\UrlIdentifier', $url->getId());
+        $this->assertEquals(1, $url->getId()->getId());
+    }
+
+    /**
+     * @expectedException \Dbrouter\Exception\Url\UrlException
+     */
+    public function testSetIdException()
+    {
+        $urlId1 = m::mock('Dbrouter\Url\UrlIdentifier');
+        $urlId1->shouldReceive('getId')->andReturn(1);
+
+        $urlId2 = m::mock('Dbrouter\Url\UrlIdentifier');
+        $urlId2->shouldReceive('getId')->andReturn(2);
+
+        $url = new Url($this->testurl);
+        $url->setId($urlId1);
+        $url->setId($urlId2);
+
+    }
+
     public function testAttachUrlSegmentItem()
     {
         $url = new Url($this->testurl);
@@ -75,6 +106,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
 
         $item1 = m::mock('\Dbrouter\Url\Segment\UrlSegmentItem');
         $item1->shouldReceive('getWeight')->once()->andReturn(2);
+        $item1->shouldReceive('getType')->once()->andReturn('path');
         $item1->shouldReceive('isLastItem')->once()->andReturn(true);
         $item1->shouldReceive('attachSegmentItemBelow');
         $item1->shouldReceive('attachSegmentItemAbove');
@@ -85,6 +117,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
 
         $item2 = m::mock('\Dbrouter\Url\Segment\UrlSegmentItem');
         $item2->shouldReceive('getWeight')->once()->andReturn(2);
+        $item2->shouldReceive('getType')->once()->andReturn('path');
         $item2->shouldReceive('isLastItem')->once()->andReturn(false);
         $item2->shouldReceive('getAbove')->andReturn($item1);
         $item2->shouldReceive('attachSegmentItemAbove');
@@ -92,20 +125,21 @@ class UrlTest extends PHPUnit_Framework_TestCase
         $url->attachUrlSegmentItem($item2);
 
         // Attach above
-        
+
         $item3 = m::mock('\Dbrouter\Url\Segment\UrlSegmentItem');
         $item3->shouldReceive('getWeight')->once()->andReturn(2);
-        
+        $item3->shouldReceive('getType')->once()->andReturn('path');
+
         $url->attachUrlSegmentItem($item3, \Dbrouter\Url\Segment\UrlSegmentItem::ATTACH_MODE_ABOVE);
     }
-    
+
     /**
      * @expectedException \Dbrouter\Exception\Url\UrlException
      */
     public function testAttachEmpty()
     {
         $item = m::mock('\Dbrouter\Url\Segment\UrlSegmentItem');
-        
+
         $url = new Url($this->testurl);
         $url->attachUrlSegmentItem($item, NULL);
     }
