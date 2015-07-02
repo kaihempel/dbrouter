@@ -222,7 +222,7 @@ class SegmentProviderTest extends PHPUnit_Framework_TestCase
         $item3 = m::mock('Dbrouter\Url\Segment\UrlSegmentItem');
         $item3->shouldReceive('getId')->once()->andReturn(null, $item3Id);
         $item3->shouldReceive('setId')->with(m::type('Dbrouter\Url\Segment\UrlSegmentIdentifier'))->once();
-        $item3->shouldReceive('isFirstItem')->once()->andReturn(true);
+        $item3->shouldReceive('isFirstItem')->once()->andReturn(false);
         $item3->shouldReceive('isLastItem')->andReturn(true);
         $item3->shouldReceive('getType')->andReturn('file');
         $item3->shouldReceive('hasExtentsion')->andReturn(true);

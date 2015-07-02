@@ -24,8 +24,8 @@ use Carbon\Carbon;
  */
 class SegmentProvider extends DataProvider
 {
-    const SAVE_MODE_CHAIN   = 'chain';
-    const SAVE_MODE_SINGLE  = 'single';
+    const MODE_CHAIN   = 'chain';
+    const MODE_SINGLE  = 'single';
 
     /**
      * Current mode
@@ -110,7 +110,7 @@ class SegmentProvider extends DataProvider
      */
     private function setSegmentChain(UrlSegmentItem $root)
     {
-        $this->mode = self::SAVE_MODE_CHAIN;
+        $this->mode = self::MODE_CHAIN;
         $this->item = $root;
 
         // Return self for chaining
@@ -126,7 +126,7 @@ class SegmentProvider extends DataProvider
      */
     private function setSingleSegmentItem(UrlSegmentItem $item)
     {
-        $this->mode = self::SAVE_MODE_SINGLE;
+        $this->mode = self::MODE_SINGLE;
         $this->item = $item;
 
         // Return self for chaining
@@ -160,7 +160,7 @@ class SegmentProvider extends DataProvider
         // Store position except in chain mode.
         // In chain mode, position will be set by the save loop!
 
-        if ($this->mode != self::SAVE_MODE_CHAIN) {
+        if ($this->mode != self::MODE_CHAIN) {
             $this->position = (int)$position;
         }
 
@@ -315,7 +315,7 @@ class SegmentProvider extends DataProvider
 
         // Insert mode depending data
 
-        if ($this->mode == self::SAVE_MODE_CHAIN) {
+        if ($this->mode == self::MODE_CHAIN) {
             $this->insertSegments($typemapper, $extentsionmapper);
 
         } else {
@@ -402,5 +402,15 @@ class SegmentProvider extends DataProvider
 
         $this->item = $current;
     }
+
+    /**
+     *
+     * @param UrlSegmentItem $item
+     */
+    public function loadByItemValue(UrlSegmentItem $item)
+    {
+
+    }
+
 
 }
