@@ -5,6 +5,7 @@ use Dbrouter\Url\UrlIdentifier;
 use Dbrouter\Url\UrlFactory;
 use Dbrouter\Url\Segment\UrlSegmentItem;
 use Dbrouter\Url\Segment\UrlSegmentMerger;
+use Dbrouter\Database\UrlMatcher;
 use Dbrouter\Database\Provider\SegmentProvider;
 use Dbrouter\Exception\Database\DataProviderException;
 use Doctrine\DBAL\Connection;
@@ -68,9 +69,14 @@ class UrlProvider extends DataProvider
     private function insertNewUrl()
     {
         // Check if URL already exists
-        //if () {
-        //  return;
-        //}
+
+        $matcher = new UrlMatcher($this->db, $this->url);
+
+        if ($matcher->isMatch()) {
+            return;
+        }
+
+        // Otherwise insert current URL
 
         $id = $this->insertNewUrlData();
         $this->url->setId(new UrlIdentifier($id));

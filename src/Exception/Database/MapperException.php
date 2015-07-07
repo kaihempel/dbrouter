@@ -12,6 +12,7 @@ use Dbrouter\Exception\DbrouterException;
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
  */
-class MapperException extends DbrouterException {
+class MapperException extends DbrouterException
+{
 
 }

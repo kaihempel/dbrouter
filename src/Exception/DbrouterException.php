@@ -12,20 +12,21 @@ use Exception;
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
  */
-class DbrouterException extends Exception {
-    
+class DbrouterException extends Exception
+{
+
     /**
      * Returns the exception object.
-     * 
+     *
      * @param   string $message
      * @return  \Dbrouter\Exception\DbrouterException
      */
     public static function make($message = NULL) {
-        
+
         if (empty($message) || ! is_string($message)) {
             $message = 'Unknown exception';
         }
-        
+
         return new static($message);
     }
 }

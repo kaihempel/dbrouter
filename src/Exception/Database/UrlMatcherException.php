@@ -12,6 +12,7 @@ use Dbrouter\Exception\DbrouterException;
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
  */
-class UrlMatcherException extends DbrouterException {
+class UrlMatcherException extends DbrouterException
+{
 
 }
