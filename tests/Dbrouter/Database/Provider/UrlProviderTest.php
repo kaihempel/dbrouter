@@ -120,6 +120,29 @@ class UrlProviderTest extends PHPUnit_Framework_TestCase
         $this->db->shouldReceive('fetchColumn')->andReturn(false);
         $this->db->shouldReceive('fetchAll')->andReturn(array($row1, $row2, $row3));
 
+        // Query Builder
+
+        $qb = m::mock('Doctrine\DBAL\Query\QueryBuilder');
+        $qb->shouldReceive('select')->andReturnSelf();
+        $qb->shouldReceive('from')->andReturnSelf();
+        $qb->shouldReceive('join')->andReturnSelf();
+        $qb->shouldReceive('leftJoin')->andReturnSelf();
+        $qb->shouldReceive('where')->andReturnSelf();
+        $qb->shouldReceive('andWhere')->andReturnSelf();
+        $qb->shouldReceive('orderBy')->andReturnSelf();
+        $qb->shouldReceive('groupBy')->andReturnSelf();
+        $qb->shouldReceive('setParameter')->andReturnSelf();
+
+        // Add querybuilder to db mock
+
+        $this->db->shouldReceive('createQueryBuilder')->andReturn($qb);
+
+        $stmt = m::mock('\Doctrine\DBAL\Driver\Statement');
+        $stmt->shouldReceive('fetchAll')->andReturn(array());
+
+        $qb->shouldReceive('execute')->andReturn($stmt);
+
+
         // Create item mock
 
         $item = m::mock('Dbrouter\Url\Segment\UrlSegmentItem');
