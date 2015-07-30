@@ -16,7 +16,7 @@ interface ConfigInterface
     /**
      * Returns one config value
      *
-     * @param   string      $key
+     * @param   string      $key            Key of the config value.
      * @return  mixed
      */
     public function getValue($key);
@@ -24,8 +24,8 @@ interface ConfigInterface
     /**
      * Sets one value
      *
-     * @param   string      $key
-     * @param   mixed       $value
+     * @param   string      $key            Key of the config value.
+     * @param   mixed       $value          Config value
      * @return  ConfigInterface
      */
     public function setValue($key, $value);
@@ -33,21 +33,21 @@ interface ConfigInterface
     /**
      * Returns the config file path
      *
-     * @return string
+     * @return  string
      */
     public function getFilePath();
 
     /**
      * Set the config file path
      *
-     * @param type $filepath
+     * @param   string      $filepath       Path to the config file.
+     * @return  ConfigInterface
      */
     public function setFilePath($filepath);
 
     /**
      * Loads the confg file
      *
-     * @param   string      $filepath
      * @return  void
      */
     public function load();
@@ -55,7 +55,6 @@ interface ConfigInterface
     /**
      * Saves the config into given filepath
      *
-     * @param   string      $filepath
      * @return  void
      */
     public function save();
