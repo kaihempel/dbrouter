@@ -20,9 +20,9 @@ class Config extends Collection implements ConfigInterface
     protected $filePath = '';
 
     /**
+     * Constructor
      *
-     * @param type $filePath
-     * @throws type
+     * @param string $filepath
      */
     public function __construct($filepath)
     {
@@ -39,7 +39,7 @@ class Config extends Collection implements ConfigInterface
     /**
      * Returns one config value
      *
-     * @param   string      $key
+     * @param   string      $key            Key of the config value.
      * @return  mixed
      */
     public function getValue($key)
@@ -50,8 +50,8 @@ class Config extends Collection implements ConfigInterface
     /**
      * Sets one value
      *
-     * @param   string      $key
-     * @param   mixed       $value
+     * @param   string      $key            Key of the config value.
+     * @param   mixed       $value          Config value
      * @return  ConfigInterface
      */
     public function setValue($key, $value)
@@ -66,7 +66,7 @@ class Config extends Collection implements ConfigInterface
     /**
      * Returns the config file path
      *
-     * @return string
+     * @return  string
      */
     public function getFilePath()
     {
@@ -76,7 +76,7 @@ class Config extends Collection implements ConfigInterface
     /**
      * Set the config file path
      *
-     * @param   string $filepath
+     * @param   string      $filepath       Path to the config file.
      * @return  ConfigInterface
      */
     public function setFilePath($filepath)
@@ -99,7 +99,6 @@ class Config extends Collection implements ConfigInterface
     /**
      * Loads the confg file
      *
-     * @param   string      $filepath
      * @return  void
      */
     public function load()
@@ -110,7 +109,6 @@ class Config extends Collection implements ConfigInterface
     /**
      * Saves the config into given filepath
      *
-     * @param   string      $filepath
      * @return  void
      */
     public function save()
@@ -135,8 +133,7 @@ class Config extends Collection implements ConfigInterface
     /**
      * Saves the current data as PHP file
      *
-     * @param   string  $filepath
-     * @param   boolean $overwrite
+     * @param   string      $filepath       Path to the config file.
      * @return  void
      * @throws  CollectionException
      */
@@ -153,7 +150,7 @@ class Config extends Collection implements ConfigInterface
     /**
      * Imports a php array from file
      *
-     * @param   string $filepath
+     * @param   string      $filepath       Path to the config file.
      * @return  void
      * @throws  ConfigException
      */
