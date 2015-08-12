@@ -23,7 +23,7 @@ class Url
     /**
      * Max supported segments
      */
-    const MAX_SEGMENTS = 255;
+    const MAX_SEGMENTS      = 255;
 
     /**
      * Url identifier object

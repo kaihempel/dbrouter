@@ -171,7 +171,7 @@ class UrlSegmentItem implements SegmentItem, SegmentItemAttachAble, SegmentExten
      * @return  UrlSegmentItem
      * @throws  UrlSegmentItemException
      */
-    public function attachAnalyzer(UrlSegmentAnalyzer $analyzer)
+    public function attachAnalyzer(Analyzer $analyzer)
     {
         // Store analyzer and process current item
 
@@ -185,8 +185,6 @@ class UrlSegmentItem implements SegmentItem, SegmentItemAttachAble, SegmentExten
 
         return $this;
     }
-
-
 
     /**
      * Checks if the current path item has a type.

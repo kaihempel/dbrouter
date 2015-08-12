@@ -1,7 +1,6 @@
 <?php namespace Dbrouter\Url\Segment;
 
 use Dbrouter\Exception\Url\UrlSegmentItemException;
-use Dbrouter\Url\Segment\UrlSegmentAnalyzer;
 use Dbrouter\Url\UrlIdentifier;
 
 /**
@@ -23,10 +22,11 @@ class UrlSegmentItemFactory
      * @param   string                  $segment
      * @param   UrlIdentifier           $urlId
      * @param   UrlSegmentIdentifier    $id
+     * @param Analyzer $analyzer
      * @return  UrlSegmentItem
      * @throws  UrlSegmentItemException
      */
-    public static function make($segment, $urlId = NULL, $id = NULL)
+    public static function make($segment, UrlIdentifier $urlId = null, UrlSegmentIdentifier $id = null, Analyzer $analyzer = null)
     {
 
         if (empty($segment) || ! is_string($segment)) {
@@ -37,17 +37,23 @@ class UrlSegmentItemFactory
 
         $item = new UrlSegmentItem($segment);
 
-        if ( ! empty($urlId) && $urlId instanceof \Dbrouter\Url\UrlIdentifier) {
+        // Set url ID
+
+        if ( ! empty($urlId)) {
             $item->setUrlId($urlId);
         }
 
-        if ( ! empty($id) && $id instanceof \Dbrouter\Url\Segment\UrlSegmentIdentifier) {
+        // Set segment ID
+
+        if ( ! empty($id)) {
             $item->setId($id);
         }
 
         // Attach analyzer to current item
 
-        $item->attachAnalyzer(new UrlSegmentAnalyzer());
+        if ( ! empty($analyzer)) {
+            $item->attachAnalyzer($analyzer);
+        }
 
         return $item;
     }
