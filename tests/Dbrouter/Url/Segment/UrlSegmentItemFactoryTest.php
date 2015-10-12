@@ -77,4 +77,19 @@ class UrlSegmentItemFactoryTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Dbrouter\Url\Segment\UrlSegmentIdentifier', $item->getId());
         $this->assertEquals(1, $item->getId()->getId());
     }
+
+    public function testNewAnalyzerItem()
+    {
+        $analyzer = m::mock('\Dbrouter\Url\Segment\Analyzer');
+        $analyzer->shouldReceive('process');
+        $analyzer->shouldReceive('getType')->andReturnNull();
+        $analyzer->shouldReceive('getWeight')->andReturn(1);
+
+        $item = UrlSegmentItemFactory::make('test', null, null, $analyzer);
+
+        $this->assertInstanceOf('\Dbrouter\Url\Segment\UrlSegmentItem', $item);
+        $this->assertEquals('test', $item->getValue());
+        $this->assertEmpty($item->getUrlId());
+        $this->assertEmpty($item->getId());
+    }
 }

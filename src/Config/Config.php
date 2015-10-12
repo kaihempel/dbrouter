@@ -17,6 +17,11 @@ use SplFileObject;
  */
 class Config extends Collection implements ConfigInterface
 {
+    /**
+     * File path
+     *
+     * @var string
+     */
     protected $filePath = '';
 
     /**

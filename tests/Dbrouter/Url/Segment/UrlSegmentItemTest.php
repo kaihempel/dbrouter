@@ -134,7 +134,7 @@ class UrlSegmentItemTest extends PHPUnit_Framework_TestCase
 
     public function testAttachItemAnalyzer() {
 
-        $analyzer = m::mock('\Dbrouter\Url\Segment\UrlSegmentAnalyzer');
+        $analyzer = m::mock('\Dbrouter\Url\Segment\Analyzer');
         $analyzer->shouldReceive('process')->once();
         $analyzer->shouldReceive('getType')->andReturn('path');
         $analyzer->shouldReceive('getWeight')->andReturn(2);
