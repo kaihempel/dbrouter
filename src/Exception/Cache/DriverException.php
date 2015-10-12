@@ -1,4 +1,4 @@
-<?php namespace Dbrouter\Exception\Url;
+<?php namespace Dbrouter\Exception\Cache;
 
 use Dbrouter\Exception\DbrouterException;
 
@@ -12,7 +12,7 @@ use Dbrouter\Exception\DbrouterException;
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
  */
-class UrlException extends DbrouterException
+class DriverException extends DbrouterException
 {
 
 }

@@ -1,9 +1,7 @@
-<?php namespace Dbrouter\Exception\Url;
-
-use Dbrouter\Exception\DbrouterException;
+<?php namespace Dbrouter\Exception\Target;
 
 /**
- * Url exception
+ * Target source exception
  *
  * @package    Dbrouter
  * @author     Kai Hempel <dev@kuweh.de>
@@ -12,7 +10,7 @@ use Dbrouter\Exception\DbrouterException;
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
  */
-class UrlException extends DbrouterException
+class TargetSourceException extends TargetException
 {
 
 }

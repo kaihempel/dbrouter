@@ -1,10 +1,11 @@
 <?php namespace Dbrouter\Database\Mapper;
 
 use Dbrouter\Database\Mapper\BaseMapper;
+use Dbrouter\Url\Segment\UrlSegmentItem;
 use Doctrine\DBAL\Connection;
 
 /**
- * Extentsion mapper class.
+ * Type mapper class.
  *
  * @package    Dbrouter
  * @author     Kai Hempel <dev@kuweh.de>
@@ -13,14 +14,21 @@ use Doctrine\DBAL\Connection;
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
  */
-class TargetTypeMapper extends BaseMapper
+class PlaceholderTypeMapper extends BaseMapper
 {
     /**
      * Type map variable.
      *
      * @var array
      */
-    protected static $map = array();
+    protected static $map       = array();
+
+    /**
+     * Regex map
+     *
+     * @var array
+     */
+    protected static $regexMap  = array();
 
     /**
      * Load the type mapping
@@ -37,12 +45,13 @@ class TargetTypeMapper extends BaseMapper
 
         // Load data
 
-        $data = $this->executeQuery($db, 'SELECT id, name FROM dbr_targettype');
+        $data = $this->executeQuery($db, 'SELECT id, type, regex FROM dbr_placeholdertype');
 
         // Store data
 
         foreach ($data as $row) {
             $this->setValue($row->name, $row->id);
+            $this->setRegex($row->id, $row->regex);
         }
     }
 
@@ -52,8 +61,22 @@ class TargetTypeMapper extends BaseMapper
      * @param   UrlSegmentItem $item
      * @return  interger|null
      */
-    public function getTargetId($target)
+    public function getPlaceholderTypeId(UrlSegmentItem $item)
     {
-        return $this->getValue($target->getType());
+        return $this->getValue($item->getType());
     }
+
+    /**
+     * Sets the regex
+     *
+     * @param   string|integer      $key            Current data key
+     * @param   string|integer      $regex          Current regex
+     * @return  void
+     */
+    public function setRegex($key, $regex)
+    {
+        static::$regexMap[$key] = $regex;
+    }
+
 }
+

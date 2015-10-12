@@ -3,7 +3,7 @@
 use Dbrouter\Exception\DbrouterException;
 
 /**
- * Url exception
+ * Url identifier exception
  *
  * @package    Dbrouter
  * @author     Kai Hempel <dev@kuweh.de>
@@ -12,7 +12,7 @@ use Dbrouter\Exception\DbrouterException;
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
  */
-class UrlException extends DbrouterException
+class PlaceholderException extends DbrouterException
 {
 
 }
