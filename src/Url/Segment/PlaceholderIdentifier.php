@@ -1,10 +1,9 @@
 <?php namespace Dbrouter\Url\Segment;
 
 use Dbrouter\Url\UrlIdentifier;
-use Dbrouter\Exception\Url\UrlIdentifierException;
 
 /**
- * Url segment identifier class
+ * Placeholder identifier class
  *
  * @package    Dbrouter
  * @author     Kai Hempel <dev@kuweh.de>
@@ -13,7 +12,7 @@ use Dbrouter\Exception\Url\UrlIdentifierException;
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
  */
-class UrlSegmentIdentifier extends UrlIdentifier
+class PlaceholderIdentifier extends UrlIdentifier
 {
 
 }
