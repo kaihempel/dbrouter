@@ -4,9 +4,6 @@ use Dbrouter\Url\UrlIdentifier;
 use Dbrouter\Url\Segment\UrlSegmentItem;
 use Dbrouter\Url\Segment\UrlSegmentParser;
 use Dbrouter\Exception\Url\UrlException;
-use Doctrine\DBAL\Connection;
-use PDO;
-use Carbon\Carbon;
 
 /**
  * Url container class

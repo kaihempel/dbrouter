@@ -1,13 +1,11 @@
 <?php namespace Dbrouter\Database;
 
 use Dbrouter\Url\Url;
-use Dbrouter\Url\UrlIdentifier;
 use Dbrouter\Url\Segment\UrlSegmentItem;
 use Dbrouter\Exception\Database\UrlMatcherException;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use PDO;
-use Carbon\Carbon;
 
 /**
  * Url matcher class

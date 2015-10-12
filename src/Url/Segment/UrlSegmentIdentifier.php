@@ -1,7 +1,6 @@
 <?php namespace Dbrouter\Url\Segment;
 
 use Dbrouter\Url\UrlIdentifier;
-use Dbrouter\Exception\Url\UrlIdentifierException;
 
 /**
  * Url segment identifier class

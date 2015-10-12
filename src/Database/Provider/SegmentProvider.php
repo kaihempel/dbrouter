@@ -10,7 +10,6 @@ use Dbrouter\Url\Url;
 use Dbrouter\Exception\Database\DataProviderException;
 use Doctrine\DBAL\Connection;
 use PDO;
-use Carbon\Carbon;
 
 /**
  * Segment dataprovider class

@@ -1,7 +1,6 @@
 <?php namespace Dbrouter\Url\Segment;
 
 use Dbrouter\Database\Mapper\PlaceholderTypeMapper;
-use Dbrouter\Database\ConnectionFactory;
 
 /**
  * Path segment item factory
