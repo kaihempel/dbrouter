@@ -2,6 +2,7 @@
 
 use Dbrouter\Url\Segment\PlaceholderIdentifier;
 use Dbrouter\Database\Mapper\PlaceholderTypeMapper;
+use Dbrouter\Exception\Url\PlaceholderException;
 use ReflectionClass;
 
 /**
