@@ -1,7 +1,7 @@
 <?php namespace Dbrouter\Database\Mapper;
 
 use Dbrouter\Database\Mapper\BaseMapper;
-use Dbrouter\Url\Segment\UrlSegmentItem;
+use Dbrouter\Exception\Database\MapperException;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -9,26 +9,20 @@ use Doctrine\DBAL\Connection;
  *
  * @package    Dbrouter
  * @author     Kai Hempel <dev@kuweh.de>
- * @copyright  2014 Kai Hempel <dev@kuweh.de>
+ * @copyright  2015 Kai Hempel <dev@kuweh.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
  */
 class PlaceholderTypeMapper extends BaseMapper
 {
-    /**
-     * Type map variable.
-     *
-     * @var array
-     */
-    protected static $map       = array();
 
     /**
      * Regex map
      *
      * @var array
      */
-    protected static $regexMap  = array();
+    protected $regexMap  = array();
 
     /**
      * Load the type mapping
@@ -50,7 +44,7 @@ class PlaceholderTypeMapper extends BaseMapper
         // Store data
 
         foreach ($data as $row) {
-            $this->setValue($row->name, $row->id);
+            $this->setValue($row->type, $row->id);
             $this->setRegex($row->id, $row->regex);
         }
     }
@@ -58,24 +52,49 @@ class PlaceholderTypeMapper extends BaseMapper
     /**
      * Return the ID of the item type
      *
-     * @param   UrlSegmentItem $item
+     * @param   string|integer $type
      * @return  interger|null
      */
-    public function getPlaceholderTypeId(UrlSegmentItem $item)
+    public function getPlaceholderTypeId($type)
     {
-        return $this->getValue($item->getType());
+        return $this->getValue($type);
     }
 
     /**
      * Sets the regex
      *
-     * @param   string|integer      $key            Current data key
+     * @param   integer             $id             Current data id
      * @param   string|integer      $regex          Current regex
-     * @return  void
+     * @return  PlaceholderTypeMapper
      */
-    public function setRegex($key, $regex)
+    public function setRegex($id, $regex)
     {
-        static::$regexMap[$key] = $regex;
+        if ( ! is_numeric($id)) {
+            throw MapperException::make('Unsupported key!');
+        }
+
+        $this->regexMap[$id] = $regex;
+
+        return $this;
+    }
+
+    /**
+     * Returns the regex
+     *
+     * @param string $key
+     * @return string
+     */
+    public function getRegex($key)
+    {
+        if ( ! is_numeric($key)) {
+            $key = $this->getValue($key);
+        }
+
+        if(isset($this->regexMap[$key])) {
+            return $this->regexMap[$key];
+        }
+
+        return null;
     }
 
 }

@@ -17,13 +17,6 @@ use Doctrine\DBAL\Connection;
 class ExtentsionMapper extends BaseMapper
 {
     /**
-     * Type map variable.
-     *
-     * @var array
-     */
-    protected static $map = array();
-
-    /**
      * Load the type mapping
      *
      * @param Connection $db

@@ -19,11 +19,10 @@ abstract class BaseMapper
 {
     /**
      * Base map variable.
-     * Have to be redeclared in child class!
      *
      * @var array
      */
-    protected static $map;
+    protected $map = array();
 
     /**
      * Constructor
@@ -39,6 +38,7 @@ abstract class BaseMapper
         // Load the data
 
         $this->load($db);
+
     }
 
     /**
@@ -55,7 +55,7 @@ abstract class BaseMapper
      * @param   Connection          $db             Database connection
      * @param   string              $query          Database query
      * @return  array
-     * @throw   UrlSegmentMapperException
+     * @throw   MapperException
      */
     protected function executeQuery(Connection $db, $query)
     {
@@ -77,7 +77,7 @@ abstract class BaseMapper
      */
     public function isEmpty()
     {
-        return (empty(static::$map)) ? true : false;
+        return (empty($this->map));
     }
 
     /**
@@ -85,17 +85,23 @@ abstract class BaseMapper
      *
      * @param   string|integer      $key            Current data key
      * @return  mixed|null
+     * @throw   MapperException
      */
     public function getValue($key)
     {
-        if (isset(static::$map[$key])) {
-            return static::$map[$key];
+        if ( ! is_string($key) && ! is_numeric($key)) {
+            throw MapperException::make('Unsporrted value type given!');
+        }
+        
+        if (isset($this->map[$key])) {
+            return $this->map[$key];
         }
 
-        return NULL;
+        return null;
     }
 
     /**
+     * Set one value in current class map
      *
      * @param   string|integer      $key            Current data key
      * @param   string|integer      $value          Current data
@@ -103,7 +109,7 @@ abstract class BaseMapper
      */
     public function setValue($key, $value)
     {
-        static::$map[$key] = $value;
+        $this->map[$key] = $value;
     }
 
 }
