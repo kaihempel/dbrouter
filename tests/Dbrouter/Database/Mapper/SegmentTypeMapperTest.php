@@ -14,7 +14,7 @@ use Mockery as m;
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
  */
-class TypeMapperTest extends PHPUnit_Framework_TestCase
+class SegmentTypeMapperTest extends PHPUnit_Framework_TestCase
 {
     protected $db = NULL;
 
@@ -46,14 +46,14 @@ class TypeMapperTest extends PHPUnit_Framework_TestCase
         $db->shouldReceive('setFetchMode');
         $db->shouldReceive('fetchAll')->andReturn(array());
 
-        $mapper = new TypeMapper($db);
+        $mapper = new SegmentTypeMapper($db);
     }
 
     public function testNewMapper()
     {
-        $mapper = new TypeMapper($this->db);
+        $mapper = new SegmentTypeMapper($this->db);
 
-        $this->assertInstanceOf('Dbrouter\Database\Mapper\TypeMapper', $mapper);
+        $this->assertInstanceOf('Dbrouter\Database\Mapper\SegmentTypeMapper', $mapper);
         $this->assertEquals(1, $mapper->getValue('path'));
         $this->assertEquals(2, $mapper->getValue('file'));
         $this->assertEquals(3, $mapper->getValue('wildcard'));
@@ -62,41 +62,14 @@ class TypeMapperTest extends PHPUnit_Framework_TestCase
         $this->assertEmpty($mapper->getValue('placeholder'));
     }
 
-    public function testCachedData()
-    {
-        // First mapper instance
-
-        $mapper1 = new TypeMapper($this->db);
-
-        $this->assertInstanceOf('Dbrouter\Database\Mapper\TypeMapper', $mapper1);
-        $this->assertEquals(1, $mapper1->getValue('path'));
-        $this->assertEmpty($mapper1->getValue('placeholder'));
-
-        // Second mapper instance
-
-        $row = new \stdClass();
-        $row->id   = 1;
-        $row->name = 'placeholder';
-
-        $db = m::mock('Doctrine\DBAL\Connection');
-        $db->shouldReceive('setFetchMode');
-        $db->shouldReceive('fetchAll')->andReturn(array($row));
-
-        $mapper2 = new TypeMapper($db);
-
-        $this->assertInstanceOf('Dbrouter\Database\Mapper\TypeMapper', $mapper2);
-        $this->assertEquals(1, $mapper2->getValue('path'));
-        $this->assertEmpty($mapper2->getValue('placeholder'));
-    }
-
     public function testGetTypeID()
     {
         $item = m::mock('Dbrouter\Url\Segment\UrlSegmentItem');
         $item->shouldReceive('getType')->once()->andReturn('path');
 
-        $mapper = new TypeMapper($this->db);
+        $mapper = new SegmentTypeMapper($this->db);
 
-        $this->assertInstanceOf('Dbrouter\Database\Mapper\TypeMapper', $mapper);
+        $this->assertInstanceOf('Dbrouter\Database\Mapper\SegmentTypeMapper', $mapper);
         $this->assertEquals(1, $mapper->getTypeId($item));
 
     }
