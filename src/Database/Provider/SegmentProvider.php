@@ -1,6 +1,6 @@
 <?php namespace Dbrouter\Database\Provider;
 
-use Dbrouter\Database\Mapper\TypeMapper;
+use Dbrouter\Database\Mapper\SegmentTypeMapper;
 use Dbrouter\Database\Mapper\ExtentsionMapper;
 use Dbrouter\Url\Segment\UrlSegmentItem;
 use Dbrouter\Url\Segment\UrlSegmentIdentifier;
@@ -180,12 +180,12 @@ class SegmentProvider extends DataProvider
     /**
      * Insert the segment values from the whole chain.
      *
-     * @param   TypeMapper              $typemapper             Mapping of the segment types
+     * @param   SegmentTypeMapper       $typemapper             Mapping of the segment types
      * @param   ExtentsionMapper        $extentsionmapper       Mapping of the
      * @return  void
      * @throws  DataProviderException
      */
-    private function insertSegments(TypeMapper $typemapper, ExtentsionMapper $extentsionmapper)
+    private function insertSegments(SegmentTypeMapper $typemapper, ExtentsionMapper $extentsionmapper)
     {
 
         // Initialize loop values
@@ -231,11 +231,11 @@ class SegmentProvider extends DataProvider
      * Inserts a single segment into database
      *
      * @param   UrlSegmentItem          $item
-     * @param   TypeMapper              $typemapper
+     * @param   SegmentTypeMapper       $typemapper
      * @param   ExtentsionMapper        $extentsionmapper
      * @return  UrlSegmentIdentifier
      */
-    public function insertSegmentData(UrlSegmentItem $item, TypeMapper $typemapper, ExtentsionMapper $extentsionmapper)
+    public function insertSegmentData(UrlSegmentItem $item, SegmentTypeMapper $typemapper, ExtentsionMapper $extentsionmapper)
     {
 
         $id = $this->segmentExists($item->getValue());
@@ -309,7 +309,7 @@ class SegmentProvider extends DataProvider
 
         // Type and extentsion mapper
 
-        $typemapper         = new TypeMapper($this->db);
+        $typemapper         = new SegmentTypeMapper($this->db);
         $extentsionmapper   = new ExtentsionMapper($this->db);
 
         // Insert mode depending data
