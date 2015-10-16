@@ -1,21 +1,19 @@
 <?php namespace Dbrouter\Url\Segment;
 
-use Dbrouter\Url\Segment\PlaceholderIdentifier;
 use Dbrouter\Database\Mapper\PlaceholderTypeMapper;
 use Dbrouter\Exception\Url\PlaceholderException;
-use ReflectionClass;
 
 /**
  * Placeholder class
  *
  * @package    Dbrouter
  * @author     Kai Hempel <dev@kuweh.de>
- * @copyright  2014 Kai Hempel <dev@kuweh.de>
+ * @copyright  2015 Kai Hempel <dev@kuweh.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
  */
-class Placeholder implements PlaceholderType
+class Placeholder implements PlaceholderTypeInterface
 {
     /**
      * Placeholder identifier
@@ -53,10 +51,11 @@ class Placeholder implements PlaceholderType
     protected $name         = '';
 
     /**
+     * Type mapper
      *
-     * @var type
+     * @var PlaceholderTypeMapper
      */
-    static protected $supportedTypes = array();
+    protected $mapper       = null;
 
     /**
      * Constructor
@@ -66,34 +65,16 @@ class Placeholder implements PlaceholderType
      */
     public function __construct($name, $type, PlaceholderTypeMapper $typemapper)
     {
-
         if ( ! is_string($name)) {
             throw PlaceholderException::make('Unexpected name given!');
         }
 
-        $this->name = $name;
+        // Set values
+
+        $this->name     = $name;
+        $this->mapper   = $typemapper;
 
         $this->setType($name);
-        $this->setTypeMapper($typemapper);
-        $this->setSupportedTypes();
-    }
-
-    /**
-     * Sets the supported types array by reflection extraction
-     *
-     * @return  void
-     */
-    private function setSupportedTypes()
-    {
-        // Check if the class variable is already empty
-
-        if (empty(self::$supportedTypes)) {
-
-            // Extract all defined types
-
-            $ref = new ReflectionClass('Placeholder');
-            self::$supportedTypes = $ref->getConstants();
-        }
     }
 
     /**
@@ -124,12 +105,12 @@ class Placeholder implements PlaceholderType
     /**
      * Checks if the given placeholder type is already defined
      *
-     * @param string $type
-     * @return boolean
+     * @param   string $type
+     * @return  boolean
      */
     public function typeExists($type)
     {
-
+        return ($this->mapper->getValue($type) === null) ? false : true;
     }
 
     /**
@@ -149,6 +130,9 @@ class Placeholder implements PlaceholderType
         }
 
         $this->type = $type;
+        $this->setRegex($this->mapper->getRegex($type));
+
+        return $this;
     }
 
     /**
@@ -158,7 +142,7 @@ class Placeholder implements PlaceholderType
      */
     public function getType()
     {
-
+        return $this->type;
     }
 
     /**
@@ -168,18 +152,7 @@ class Placeholder implements PlaceholderType
      */
     public function getTypeId()
     {
-
-    }
-
-    /**
-     * Returns a defined regex for the given type
-     *
-     * @param   string $type
-     * @return  string
-     */
-    public function getTypeRegex($type)
-    {
-
+        return $this->mapper->getValue($this->type);
     }
 
     /**
@@ -200,6 +173,8 @@ class Placeholder implements PlaceholderType
     }
 
     /**
+     * Returns a defined regex for the current type
+     *
      * @return string
      */
     public function getRegex()

@@ -6,17 +6,13 @@
  *
  * @package    Dbrouter
  * @author     Kai Hempel <dev@kuweh.de>
- * @copyright  2014 Kai Hempel <dev@kuweh.de>
+ * @copyright  2015 Kai Hempel <dev@kuweh.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
  */
-interface PlaceholderType
+interface PlaceholderTypeInterface
 {
-    const PLACEHOLDER_ID      = 'id';
-    const PLACEHOLDER_INTEGER = 'integer';
-    const PLACEHOLDER_STRING  = 'string';
-
     /**
      * Checks if the given placeholder type is already defined
      *
@@ -29,7 +25,7 @@ interface PlaceholderType
      * Sets the corresponding placeholder type
      *
      * @param   string $type
-     * @return  PlaceholderType
+     * @return  PlaceholderTypeInterface
      */
     public function setType($type);
 
@@ -48,10 +44,17 @@ interface PlaceholderType
     public function getTypeId();
 
     /**
-     * Returns a defined regex for the given type
+     * Overwrites the defined regex with the given one.
      *
-     * @param   string $type
+     * @param   string $regex
+     * @return  PlaceholderTypeInterface
+     */
+    public function setRegex($regex);
+
+    /**
+     * Returns a defined regex for the current type
+     *
      * @return  string
      */
-    public function getTypeRegex($type);
+    public function getRegex();
 }

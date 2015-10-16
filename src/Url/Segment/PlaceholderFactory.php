@@ -1,6 +1,7 @@
 <?php namespace Dbrouter\Url\Segment;
 
 use Dbrouter\Database\Mapper\PlaceholderTypeMapper;
+use Dbrouter\Exception\Url\PlaceholderException;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -8,7 +9,7 @@ use Doctrine\DBAL\Connection;
  *
  * @package    Dbrouter
  * @author     Kai Hempel <dev@kuweh.de>
- * @copyright  2014 Kai Hempel <dev@kuweh.de>
+ * @copyright  2015 Kai Hempel <dev@kuweh.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
@@ -16,13 +17,23 @@ use Doctrine\DBAL\Connection;
 class PlaceholderFactory
 {
     /**
-     * Initialize the analyzer object
+     * Initialize the placeholder object
      *
      * @param   PlaceholderTypeMapper       $placeholderTypeMapper
      * @return  Analyzer
      */
-    public static function make(Connection $db)
+    public static function make($name, $type, Connection $db)
     {
-        return new Placeholder();
+        // Create mapper instance and check the given type
+
+        $mapper = new PlaceholderTypeMapper($db);
+
+        if ($mapper->getValue($type) === null) {
+            throw PlaceholderException::make('Unsupported type "' . $type . '" given!');
+        }
+
+        // Return new placeholder instance
+
+        return new Placeholder($name, $type, $mapper);
     }
 }
