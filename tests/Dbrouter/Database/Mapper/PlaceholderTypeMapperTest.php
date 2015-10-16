@@ -22,17 +22,17 @@ class PlaceholderTypeMapperTest extends PHPUnit_Framework_TestCase
     {
         $row1 = new \stdClass();
         $row1->id       = 1;
-        $row1->name     = 'integer';
+        $row1->type     = 'integer';
         $row1->regex    = '^[0-9]+$';
 
 	$row2 = new \stdClass();
         $row2->id       = 2;
-        $row2->name     = 'id';
+        $row2->type     = 'id';
         $row2->regex    = '^[1-9]{1,10}$';
 
         $row3 = new \stdClass();
         $row3->id       = 3;
-        $row3->name     = 'string';
+        $row3->type     = 'string';
         $row3->regex    = '^.*$';
 
         $this->db = m::mock('Doctrine\DBAL\Connection');
@@ -57,50 +57,23 @@ class PlaceholderTypeMapperTest extends PHPUnit_Framework_TestCase
         $mapper = new PlaceholderTypeMapper($this->db);
 
         $this->assertInstanceOf('Dbrouter\Database\Mapper\PlaceholderTypeMapper', $mapper);
-        $this->assertEquals(1, $mapper->getValue('path'));
-        $this->assertEquals(2, $mapper->getValue('file'));
-        $this->assertEquals(3, $mapper->getValue('wildcard'));
+        $this->assertEquals(1, $mapper->getValue('integer'));
+        $this->assertEquals(2, $mapper->getValue('id'));
+        $this->assertEquals(3, $mapper->getValue('string'));
 
-        // Placeholder not mapped
-        $this->assertEmpty($mapper->getValue('placeholder'));
-    }
-
-    public function testCachedData()
-    {
-        // First mapper instance
-
-        $mapper1 = new PlaceholderTypeMapper($this->db);
-
-        $this->assertInstanceOf('Dbrouter\Database\Mapper\PlaceholderTypeMapper', $mapper1);
-        $this->assertEquals(1, $mapper1->getValue('path'));
-        $this->assertEmpty($mapper1->getValue('placeholder'));
-
-        // Second mapper instance
-
-        $row = new \stdClass();
-        $row->id   = 1;
-        $row->name = 'placeholder';
-
-        $db = m::mock('Doctrine\DBAL\Connection');
-        $db->shouldReceive('setFetchMode');
-        $db->shouldReceive('fetchAll')->andReturn(array($row));
-
-        $mapper2 = new PlaceholderTypeMapper($db);
-
-        $this->assertInstanceOf('Dbrouter\Database\Mapper\PlaceholderTypeMapper', $mapper2);
-        $this->assertEquals(1, $mapper2->getValue('path'));
-        $this->assertEmpty($mapper2->getValue('placeholder'));
+        // test not mapped
+        $this->assertEmpty($mapper->getValue('test'));
     }
 
     public function testGetTypeID()
     {
-        $item = m::mock('Dbrouter\Url\Segment\UrlSegmentItem');
-        $item->shouldReceive('getType')->once()->andReturn('path');
+        $item = m::mock('Dbrouter\Url\Segment\Placeholder');
+        $item->shouldReceive('getType')->once()->andReturn('integer');
 
         $mapper = new PlaceholderTypeMapper($this->db);
 
         $this->assertInstanceOf('Dbrouter\Database\Mapper\PlaceholderTypeMapper', $mapper);
-        $this->assertEquals(1, $mapper->getTypeId($item));
+        $this->assertEquals(1, $mapper->getPlaceholderTypeId($item->getType()));
 
     }
 
