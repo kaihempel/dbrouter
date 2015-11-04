@@ -24,10 +24,12 @@
         }
     },
     "require": {
+        "php": ">=5.4.0",
         "symfony/http-foundation": "2.6.*",
         "symfony/http-kernel": "2.6.*",
         "doctrine/dbal": "2.5.*",
-        "nesbot/carbon": "1.18.*"
+        "nesbot/carbon": "1.18.*",
+        "kaihempel/simpledi": "0.1.*"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",
