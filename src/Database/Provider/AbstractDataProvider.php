@@ -15,7 +15,7 @@ use PDO;
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
  */
-abstract class DataProvider
+abstract class AbstractDataProvider
 {
     /**
      * Current database instance

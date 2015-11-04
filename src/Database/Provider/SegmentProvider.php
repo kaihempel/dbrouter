@@ -21,7 +21,7 @@ use PDO;
  * @link       https://www.kuweh.de/
  * @since      Class available since Release 1.0.0
  */
-class SegmentProvider extends DataProvider
+class SegmentProvider extends AbstractDataProvider
 {
     const MODE_CHAIN   = 'chain';
     const MODE_SINGLE  = 'single';
