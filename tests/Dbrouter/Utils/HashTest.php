@@ -29,4 +29,12 @@ class HashTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(Hash::valid('a94a8fe5ccb19ba61c4c0873d391e987982fbbd3'));
     }
 
+    public function testInstanceCompare()
+    {
+        $hash = new Hash('test');
+
+        $this->assertFalse(($hash == 'test'));
+        $this->assertTrue(($hash =='a94a8fe5ccb19ba61c4c0873d391e987982fbbd3'));
+    }
+
 }

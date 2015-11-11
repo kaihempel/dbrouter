@@ -51,6 +51,16 @@ class Hash {
     }
 
     /**
+     * Magic call for direct string compare
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getHash();
+    }
+
+    /**
      * Checks if the given string is a valid hash
      *
      * @param string $hash
