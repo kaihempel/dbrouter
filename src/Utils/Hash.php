@@ -27,7 +27,7 @@ class Hash {
      */
     public function __construct($string)
     {
-        $this->calculateHash($string);
+        $this->hash = $this->calculateHash($string);
     }
 
     /**
@@ -37,9 +37,39 @@ class Hash {
      */
     private function calculateHash($string)
     {
-        $this->hash = sha1($string);
+        if ( ! is_string($string)) {
+            $string = $this->generateHashableData($string);
+        }
+
+        return sha1($string);
     }
 
+    /**
+     * Generates a hashable string value based on the given data
+     *
+     * @param mixed $data
+     * @return string
+     */
+    private function generateHashableData($data)
+    {
+        if (is_object($data)) {
+            return spl_object_hash($data);
+
+        } else if (is_array($data)) {
+            return serialize($data);
+        }
+
+        return (string)$data;
+    }
+
+    /**
+     *
+     * @param type $string
+     */
+    public function resetHash($string)
+    {
+        $this->hash = $this->calculateHash($string);
+    }
     /**
      * Returns the hash
      *
