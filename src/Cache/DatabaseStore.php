@@ -3,7 +3,7 @@
 /**
  * Url matcher class
  *
- * @package    Dynamicuri
+ * @package    Dbrouter
  * @author     Kai Hempel <dev@kuweh.de>
  * @copyright  2014 Kai Hempel <dev@kuweh.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
